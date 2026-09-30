@@ -1,0 +1,23 @@
+flowchart TD
+    %% Nodes
+    User([Liquidity Provider / User])
+    AMM[Solana AMM / Dynamic Pool 3 DLMM]
+    Oracle[Attestation Oracle Worker]
+    Contract[Anchor Contract: pump_the_pool_quests]
+    VideoEngine[Programmatic Video Synthesis Engine]
+    Storage[(IPFS / S3 Video Storage)]
+    Webhook[Discord / Slack & Resend Enterprise API]
+
+    %% Flow
+    User -->|1. Deposits Liquidity into DLMM Bin| AMM
+    AMM -->|2. Emits Mint / Position Token| User
+    User -->|3. Submits Social Proofs X/Discord| Oracle
+    Oracle -->|4. Verifies Engagement & Signs Attestation with Ed25519| Oracle
+    User -->|5. Calls claim_quest_with_lp_proof ctx| Contract
+    Contract -->|6. Validates Oracle Sig & LP Bin Liquidity Range| Contract
+    Contract -->|7. Mints Season Zero Tier Points & Emits Event| Contract
+    Contract -.->|8. Event Listened by Orchestrator| VideoEngine
+    VideoEngine -->|9. Fetches On-Chain Pool Metrics & User Stats| VideoEngine
+    VideoEngine -->|10. Renders 60FPS Dynamic Motion Graphic MP4| Storage
+    Storage -->|11. Emits Signed Playback URL| Webhook
+    Webhook -->|12. Dispatches Video Delivery Notification to User| User

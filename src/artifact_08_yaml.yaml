@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  season-zero-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: season_zero_engine
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - RPC_URL=https://api.mainnet-beta.solana.com
+      - ORACLE_PRIVATE_KEY=${ORACLE_PRIVATE_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'require(\"http\").get(\"http://localhost:8080/health\", (r) => { if (r.statusCode !== 200) process.exit(1); })'"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - video-renders:/tmp/season_zero_renders
+
+volumes:
+  video-renders:
+    driver: local

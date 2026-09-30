@@ -1,0 +1,12 @@
++-------------------------------------------------------------------------------------------------------+
+|                                    ENTERPRISE ARCHITECTURE OVERVIEW                                   |
+|                                                                                                       |
+|  [ User / LP ] ---> [ Dynamic Pool 3 (Meteora DLMM) ] ---> [ Anchor Season Zero Contract ]             |
+|          |                                                             |                              |
+|          | (Completes Social Quests)                                   | (On-Chain Quest Attestation) |
+|          v                                                             v                              |
+|  [ Social Verification Oracle ] ---> [ Ed25519 Signature ] ---> [ Automated Video Pipeline ]          |
+|                                                                        |                              |
+|                                                                        v                              |
+|                                             [ 1080p MP4 Dynamic Video + Discord / Resend Alerts ]     |
++-------------------------------------------------------------------------------------------------------+
