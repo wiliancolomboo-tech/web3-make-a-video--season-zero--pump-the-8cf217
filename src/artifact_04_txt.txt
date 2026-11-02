@@ -1,0 +1,72 @@
+========================================================================================
+VIDEO TITLE: "Mastering Season Zero: Pump the Pool 3 & On-Chain Social Quests"
+FORMAT: 4K UHD, 60fps, 16:9 widescreen
+TARGET DURATION: 03:45
+AUDIO: High-tempo tech synthwave (120 BPM) + Professional Male/Female Voiceover
+========================================================================================
+
+[00:00 - 00:30] SCENE 1: THE LIQUIDITY CONUNDRUM & SEASON ZERO REVEAL
+Visual:
+- Dynamic 3D motion graphic zooming in from the Solana network cluster to an AMM pool.
+- Red alerts showing "Mercenary Liquidity" vs. "Real Community Capital".
+- Cinematic title card slams into frame: "SEASON ZERO: PUMP THE POOL 3".
+Voiceover:
+"DeFi liquidity campaigns fail when incentives go to mercenaries who dump and run. 
+Welcome to Season Zero: Pump the Pool 3—where on-chain liquidity depth meets 
+provable community social quests on Solana. In this walkthrough, we'll demonstrate 
+how locking your LP tokens, publishing video guides, and amplifying the ecosystem 
+unlocks maximum yield multipliers."
+
+[00:30 - 01:15] SCENE 2: PUMP THE POOL 3 LIQUIDITY MECHANICS
+Visual:
+- Screen capture of the dApp UI at https://seasonzero.pool.solana.com.
+- Mouse clicks "Connect Phantom / Solflare".
+- User deposits SOL/USDC LP tokens into the "Pump the Pool 3" Concentrated Vault.
+- Three tier slider is highlighted: 
+  * Tier 1 (30 Days): 1.0x Base XP
+  * Tier 2 (60 Days): 1.5x Boost
+  * Tier 3 (90 Days): 2.5x Max Multiplier!
+Voiceover:
+"Pump the Pool 3 introduces our non-linear bonding curve. Simply deposit your LP 
+tokens from Raydium or Meteora, select your lock duration, and activate your tier. 
+Locking for Tier 3 instantly grants a 2.5x multiplier on your base points, safeguarding 
+the pool against predatory exit velocity while compounding your Season Zero harvest."
+
+[01:15 - 02:15] SCENE 3: CRUSHING SOCIAL QUESTS & CONTENT CREATION
+Visual:
+- Transition to the "Social Quests" tab.
+- Interactive Quest Board showing active cards:
+  1. "Produce a Deep-Dive Technical Video (YouTube / X)" [+5,000 XP]
+  2. "Publish Educational Thread on Pump the Pool Dynamics" [+2,500 XP]
+  3. "Daily Liquidity Check-in & Discord Community Boost" [+500 XP]
+- Cursor enters YouTube/X video link into the quest submission input.
+- Instant validation checkmark turns green: "Metadata Parsed: Duration 3m45s | 1080p verified".
+Voiceover:
+"Social Quests aren't just vanity metrics. Our Automated Verification Engine parses 
+your submitted video guides, developer threads, and creator reviews. High-quality video 
+submissions receive up to 5,000 XP. This off-chain social score merges directly with 
+your on-chain LP multiplier to maximize your reward bracket."
+
+[02:15 - 03:00] SCENE 4: UNDER THE HOOD – CRYPTOGRAPHIC MERKLE SETTLEMENT
+Visual:
+- Split screen: Terminal showing the `QuestVerifierDaemon` indexing transactions on the left, 
+  and Solana Explorer on the right showing the `commit_epoch_merkle_root` transaction.
+- Animated 3D Merkle Tree collapses leaves into the on-chain Epoch PDA root.
+Voiceover:
+"Security and transparency are non-negotiable. Every epoch, our Rust Anchor contract 
+anchors a deterministic Merkle root on Solana. The leaf cryptographically binds your 
+wallet, your LP tier, and your verified quest XP. Zero centralized black-boxes; 
+pure deterministic verification."
+
+[03:00 - 03:45] SCENE 5: ONE-CLICK CLAIM & CALL TO ACTION
+Visual:
+- Back to UI: User clicks "Claim Season Zero Allocations".
+- Wallet pops up with zero-slippage claim transaction.
+- Balance increases on-screen with confetti animation.
+- End slate with quick links: GitHub repo, dApp URL, Discord invitation, and Twitter handle.
+Voiceover:
+"When an epoch seals, hit Claim. Your reward tokens land directly in your wallet in a 
+single atomic Solana transaction. Don't leave your liquidity idle. Lock into Pump the 
+Pool 3, complete your social quests, submit your video, and claim your share of Season Zero. 
+Links in the description below. Let's pump the pool!"
+========================================================================================

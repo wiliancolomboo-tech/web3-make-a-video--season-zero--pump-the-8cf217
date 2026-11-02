@@ -1,0 +1,33 @@
+FROM node:20-slim AS builder
+
+WORKDIR /usr/src/app
+
+# Install FFmpeg & native dependencies for media processing
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY package*.json tsconfig.json ./
+RUN npm ci
+
+COPY src/ ./src/
+RUN npm run build || true
+
+FROM node:20-slim AS runner
+WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get install -y ffmpeg curl && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/src ./src
+
+ENV NODE_ENV=production
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
+
+EXPOSE 8080
+CMD ["node", "-r", "ts-node/register", "src/cli.ts"]

@@ -1,0 +1,6 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_NETWORK=devnet
+PROGRAM_ID=QstC2oZ4V8yVvJd2Fw7K3X1nM9yQvR9u4JqB7vE6mRt
+ORACLE_PRIVATE_KEY_PATH=/secrets/oracle-keypair.json
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+PORT=8080

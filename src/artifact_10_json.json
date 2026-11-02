@@ -1,0 +1,8 @@
+{
+  "status": "HEALTHY",
+  "season": "Season Zero",
+  "pool": "Pump the Pool 3",
+  "active_rpc": "https://api.devnet.solana.com",
+  "vault_synced": true,
+  "uptime_seconds": 84120
+}

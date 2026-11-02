@@ -1,0 +1,24 @@
+========================================================================================
+VIDEO PRODUCTION SCRIPT: "SEASON ZERO // PUMP THE POOL 3 & SOCIAL QUESTS"
+Runtime: 0:45 | Resolution: 3840x2160 (4K 60fps) | Audio: Cyberpunk D&B Synthwave
+========================================================================================
+
+[0:00 - 0:08] HOOK (Visual: Rapid macro shots of Solana transaction visualizer exploding into green neon)
+Voiceover (Energetic, Authoritative):
+"DeFi on Solana just hit escape velocity. Welcome to Season Zero: Pump the Pool 3."
+
+[0:09 - 0:18] CORE PROBLEM & PUMP THE POOL 3 (Visual: DEX chart candles surging upward, LP tokens locking)
+Voiceover:
+"Liquidity isn’t just parked—it’s supercharged. Pump the Pool 3 introduces instant automated
+yield multipliers and dynamic tiering for LP champions on Solana."
+
+[0:19 - 0:30] SOCIAL QUESTS & ON-CHAIN PROOFS (Visual: UI showing Video Quest uploads, instant Ed25519 hashes)
+Voiceover:
+"Create. Stream. Amplify. Complete Social and Video Quests verified instantly by our
+autonomous cryptographic engine. Zero waiting. Real on-chain proof."
+
+[0:31 - 0:45] CALL TO ACTION & BRANDING (Visual: Clean Solana green logo, Season Zero Leaderboard URL)
+Voiceover:
+"Season Zero is live right now. Lock your liquidity, claim your quests, and dominate the leaderboard.
+Pump the Pool 3 starts today."
+========================================================================================

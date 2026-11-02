@@ -1,0 +1,8 @@
+{
+  "status": "HEALTHY",
+  "season": 0,
+  "oraclePubkey": "AegisOra11111111111111111111111111111111111",
+  "rpcConnection": "connected",
+  "activeWebhooks": ["slack", "discord"],
+  "uptimeSeconds": 86420
+}

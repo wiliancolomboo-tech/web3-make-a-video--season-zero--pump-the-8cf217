@@ -1,0 +1,14 @@
+1/3 🚀 Introducing Season Zero: Pump the Pool 3 & Social Quest Engine on @Solana!
+
+We built an enterprise-grade, cryptographically verified liquidity bootstrap system. No spreadsheets, no sybils—just pure on-chain attestation and boosted LP yields. 🧵👇
+
+2/3 ⚡ How it works:
+🎥 Social Video Quests: Attested via Ed25519 oracle signatures & settled directly on Solana L1.
+🌊 Pump the Pool 3: Time-locked LP pledges with mathematical point multipliers.
+🔔 Automated webhooks (Discord/Slack) + instant receipts via @resend.
+
+3/3 📦 Fully open-source, turnkey Docker architecture, non-truncated Anchor 0.30+ program, and 100% passing QA integration tests. 
+
+Check out the full walkthrough video & code submission here: https://github.com/sponsor-org/season-zero-pump-the-pool 
+
+#Solana #DeFi #SeasonZero #PumpThePool

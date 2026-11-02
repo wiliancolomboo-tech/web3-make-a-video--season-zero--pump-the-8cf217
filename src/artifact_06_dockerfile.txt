@@ -1,0 +1,16 @@
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+RUN apk add --no-cache python3 make g++ git
+
+COPY package.json yarn.lock* tsconfig.json ./
+RUN yarn install --frozen-lockfile
+
+COPY src ./src
+COPY idl ./idl
+
+RUN yarn build
+
+EXPOSE 8080
+ENV NODE_ENV=production
+CMD ["node", "dist/indexer_and_oracle.js"]

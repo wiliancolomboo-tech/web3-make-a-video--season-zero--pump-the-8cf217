@@ -1,0 +1,2 @@
+GET /health
+  Response: {"status":"healthy","slot":258410291,"oracle_synced":true}

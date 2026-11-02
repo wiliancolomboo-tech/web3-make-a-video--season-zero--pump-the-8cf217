@@ -1,0 +1,38 @@
+FROM node:20-bullseye-slim AS base
+
+# Install system dependencies required for Headless Chrome & FFmpeg video rendering
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    chromium \
+    libnss3 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libgbm1 \
+    libasound2 \
+    ca-certificates \
+    fonts-freefont-ttf \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
+WORKDIR /app
+
+COPY package.json yarn.lock tsconfig.json ./
+COPY packages/orchestrator/package.json ./packages/orchestrator/
+
+RUN yarn install --frozen-lockfile
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 8080
+
+CMD ["node", "packages/orchestrator/dist/index.js"]

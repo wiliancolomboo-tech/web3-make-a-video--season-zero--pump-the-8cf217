@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  quest-oracle:
+    build: .
+    container_name: pump_quest_oracle
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - SOLANA_RPC=https://api.mainnet-beta.solana.com
+      - ORACLE_SECRET_KEY=${ORACLE_SECRET_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

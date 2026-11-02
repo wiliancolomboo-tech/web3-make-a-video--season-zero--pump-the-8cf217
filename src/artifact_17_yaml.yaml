@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  quest-oracle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - ORACLE_SECRET_KEY=${ORACLE_SECRET_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

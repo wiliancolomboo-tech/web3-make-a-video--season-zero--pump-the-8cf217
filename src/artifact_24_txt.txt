@@ -1,0 +1,3 @@
+2/ Under the hood:
+🌊 "Pump the Pool 3": Early depositors lock LP shares into an escrow PDA to secure dynamic time-weighted multipliers (up to 1.5x).
+🛡️ Sybil-Resistant Quests: Off-chain social actions (X/Discord) compile into a deterministic Merkle tree. Users claim on-chain with < 25k CUs!

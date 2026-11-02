@@ -1,0 +1,8 @@
+pumppool_claim_attempts_total
+pumppool_claim_success_total
+pumppool_claim_failures_total
+pumppool_verification_latency_ms
+pumppool_rpc_confirmation_latency_ms
+pumppool_webhook_failures_total
+pumppool_vault_balance
+pumppool_worker_queue_depth

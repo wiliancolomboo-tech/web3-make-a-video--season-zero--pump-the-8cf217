@@ -1,0 +1,4 @@
+How it works under the hood:
+1️⃣ Stake LP into Pool 3 → Instant on-chain tier calculation (up to 35,000 bps boost).
+2️⃣ Upload your community video → Our fast oracle validates perceptual hashes (pHash) against Sybil spam.
+3️⃣ Ed25519 signed proofs hit the @AnchorLang program to credit Season Zero points deterministically!

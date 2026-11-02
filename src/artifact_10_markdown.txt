@@ -1,0 +1,18 @@
+🧵 1/3
+Thrilled to release our production infrastructure & video submission for Season Zero, Pump the Pool 3 & Social Quests on @solana! 🚀
+
+Say goodbye to manual quest verification and bot farms. We’ve built an end-to-end decentralized engine connecting content creation directly to on-chain AMM liquidity! ⚡️
+
+🧵 2/3
+What makes this different?
+✅ Anchor Quest PDA with SHA-256 video fingerprint attestation
+✅ Cryptographic Keccak-256 Merkle proofs for Sybil-proof claims
+✅ "Pump the Pool 3" programmatic auto-split: every claim directs 20% straight to DEX liquidity vaults!
+Watch our demo video here: [VIDEO_LINK]
+
+🧵 3/3
+Turnkey, open-source, and Dockerized with real-time Discord/Slack webhooks and 100% test coverage. 
+
+Dive into our GitHub repo & submission package:
+🔗 [GITHUB_LINK]
+cc @SuperteamDAO @solana #Solana #DeFi #PumpThePool

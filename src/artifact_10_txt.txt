@@ -1,0 +1,11 @@
+[Scene 1: 0:00 - 0:15] Visual: High-tempo neon visual of Solana blazing fast transactions transitioning into "SEASON ZERO: PUMP THE POOL 3".
+Voiceover: "Season Zero is here. Liquidity providers, creators, and community champions: this is your playbook for Pump the Pool 3 and Social Quests on Solana."
+
+[Scene 2: 0:15 - 0:45] Visual: UI walkthrough showing the connected wallet, claiming the "Watch Explainer" Social Quest, and instant point increment.
+Voiceover: "Forget bot-farmed campaigns. Season Zero integrates native Ed25519 cryptographic attestations. Complete social quests, verify your video watch time, and earn verified XP directly on-chain."
+
+[Scene 3: 0:45 - 1:20] Visual: Deep dive into the "Pump the Pool 3" staking mechanics, highlighting the 3.0x 90-day time-weighted multiplier.
+Voiceover: "Ready to maximize your yield? In Pump the Pool 3, lock your LP tokens for 7 to 90 days. Boost your point multiplier up to 3x, earn seasonal revenue share, and climb the leaderboard before the season closes."
+
+[Scene 4: 1:20 - 1:45] Visual: Docker running, Discord webhooks alerting live deposits, and mobile wallet signing confirmation.
+Voiceover: "Built with non-custodial Anchor escrow vaults, enterprise Resend receipt emails, and real-time Discord telemetry. Dive into Season Zero now!"

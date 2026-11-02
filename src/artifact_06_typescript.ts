@@ -1,190 +1,298 @@
-// tests/pump_the_pool_quests.ts
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { PumpThePoolQuests } from "../target/types/pump_the_pool_quests";
-import { Keypair, PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY } from "@solana/web3.js";
-import { SeasonZeroOrchestrator } from "../src/orchestrator";
-import { DynamicVideoEngine } from "../src/render_engine";
+import { PumpQuestPool } from "../target/types/pump_quest_pool";
+import {
+  Keypair,
+  PublicKey,
+  SystemProgram,
+  SYSVAR_INSTRUCTIONS_PUBKEY,
+  Ed25519Program,
+} from "@solana/web3.js";
+import {
+  TOKEN_PROGRAM_ID,
+  createMint,
+  createAssociatedTokenAccount,
+  mintTo,
+  getAccount,
+} from "@solana/spl-token";
 import { expect } from "chai";
+import * as crypto from "crypto";
+import * as nacl from "tweetnacl";
 
-describe("Season Zero: Pump the Pool 3 & Social Quests QA Matrix", () => {
+describe("pump_quest_pool contract suite", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
-  const program = anchor.workspace.PumpThePoolQuests as Program<PumpThePoolQuests>;
-  const oracleKeypair = Keypair.generate();
-  const userKeypair = Keypair.generate();
-  const seasonId = 101;
-  const minLpLamports = new anchor.BN(1_000_000_000); // 1.0 SOL
+  const program = anchor.workspace.PumpQuestPool as Program<PumpQuestPool>;
 
+  const admin = (provider.wallet as any).payer as Keypair;
+  const oracle = Keypair.generate();
+  const claimant = Keypair.generate();
+  const attacker = Keypair.generate();
+
+  let rewardMint: PublicKey;
   let campaignPda: PublicKey;
-  let userRecordPda: PublicKey;
-  let orchestrator: SeasonZeroOrchestrator;
+  let rewardVaultPda: PublicKey;
+
+  const campaignId = new anchor.BN(3); // Season Zero, Pump the Pool 3
+  const rewardPerClaim = new anchor.BN(100_000_000); // 100 Reward Tokens (e.g., 6 decimals)
+  const maxClaims = new anchor.BN(10);
+  const socialQuestId = new anchor.BN(101);
+
+  const videoHash = crypto.createHash("sha256").update("season_zero_pool_3_demo_video").digest();
 
   before(async () => {
-    // Airdrop SOL to test participants
-    const sig1 = await provider.connection.requestAirdrop(userKeypair.publicKey, 5 * anchor.web3.LAMPORTS_PER_SOL);
-    await provider.connection.confirmTransaction(sig1);
+    // 1. Airdrop SOL to test participants
+    const airdropClaimant = await provider.connection.requestAirdrop(
+      claimant.publicKey,
+      2 * anchor.web3.LAMPORTS_PER_SOL
+    );
+    await provider.connection.confirmTransaction(airdropClaimant);
 
+    const airdropAttacker = await provider.connection.requestAirdrop(
+      attacker.publicKey,
+      2 * anchor.web3.LAMPORTS_PER_SOL
+    );
+    await provider.connection.confirmTransaction(airdropAttacker);
+
+    // 2. Setup Reward Mint & Vault
+    rewardMint = await createMint(
+      provider.connection,
+      admin,
+      admin.publicKey,
+      null,
+      6
+    );
+
+    const campaignIdBuf = campaignId.toArrayLike(Buffer, "le", 8);
     [campaignPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("campaign_season"), new anchor.BN(seasonId).toArrayLike(Buffer, "le", 4)],
+      [Buffer.from("campaign"), campaignIdBuf],
       program.programId
     );
 
-    [userRecordPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("user_quest"), userKeypair.publicKey.toBuffer(), campaignPda.toBuffer()],
+    [rewardVaultPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("campaign_vault"), campaignIdBuf],
       program.programId
     );
 
-    orchestrator = new SeasonZeroOrchestrator({
-      rpcUrl: provider.connection.rpcEndpoint,
-      oracleKeypair: oracleKeypair,
-    });
-  });
-
-  it("1. Successfully initializes Season Zero campaign instance", async () => {
-    const futureTimestamp = new anchor.BN(Math.floor(Date.now() / 1000) + 86400 * 30);
-
+    // Initialize Campaign
     await program.methods
-      .initializeCampaign(
-        seasonId,
-        Array.from(oracleKeypair.publicKey.toBytes()),
-        minLpLamports,
-        futureTimestamp
-      )
+      .initializeCampaign(campaignId, rewardPerClaim, maxClaims, oracle.publicKey)
       .accounts({
         campaign: campaignPda,
-        admin: provider.wallet.publicKey,
+        rewardMint: rewardMint,
+        rewardVault: rewardVaultPda,
+        admin: admin.publicKey,
         systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        rent: anchor.web3.SYSVAR_RENT_PUBKEY,
       })
+      .signers([admin])
       .rpc();
 
-    const campaignState = await program.account.campaignState.fetch(campaignPda);
-    expect(campaignState.seasonId).to.equal(seasonId);
-    expect(campaignState.isActive).to.be.true;
-    expect(campaignState.totalParticipants.toNumber()).to.equal(0);
+    // Fund the campaign vault
+    await mintTo(
+      provider.connection,
+      admin,
+      rewardMint,
+      rewardVaultPda,
+      admin.publicKey,
+      10_000_000_000 // 10,000 tokens
+    );
   });
 
-  it("2. Validates Ed25519 signature and claims quest with dynamic pool liquidity", async () => {
-    const questBit = 0; // Quest 0: "Retweet & Follow Campaign"
-    const lpAmount = BigInt(2_500_000_000); // 2.5 SOL in DLMM pool
-    const xpReward = new anchor.BN(500);
-
-    const { ed25519Ix, signature } = await orchestrator.generateQuestAttestation(
-      userKeypair.publicKey,
-      questBit,
-      lpAmount
+  it("1. Successfully executes valid video & social quest reward claim with ed25519 signature", async () => {
+    const claimantTokenAccount = await createAssociatedTokenAccount(
+      provider.connection,
+      claimant,
+      rewardMint,
+      claimant.publicKey
     );
 
-    const claimIx = await program.methods
-      .claimQuestWithLpProof(
-        questBit,
-        new anchor.BN(lpAmount.toString()),
-        xpReward,
-        Array.from(signature)
-      )
-      .accounts({
-        campaign: campaignPda,
-        userRecord: userRecordPda,
-        user: userKeypair.publicKey,
-        sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-        systemProgram: SystemProgram.programId,
-      })
-      .instruction();
-
-    const tx = new anchor.web3.Transaction().add(ed25519Ix).add(claimIx);
-    const txSig = await provider.sendAndConfirm(tx, [userKeypair]);
-    expect(txSig).to.be.a("string");
-
-    const record = await program.account.userQuestRecord.fetch(userRecordPda);
-    expect(record.completedQuestsMask).to.equal(1 << questBit);
-    expect(record.xpBalance.toNumber()).to.equal(500);
-  });
-
-  it("3. Rejects duplicate claims for the same quest bit (Double Spend Protection)", async () => {
-    const questBit = 0;
-    const lpAmount = BigInt(2_500_000_000);
-    const xpReward = new anchor.BN(500);
-
-    const { ed25519Ix, signature } = await orchestrator.generateQuestAttestation(
-      userKeypair.publicKey,
-      questBit,
-      lpAmount
+    const [userClaimPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("user_claim"),
+        campaignId.toArrayLike(Buffer, "le", 8),
+        claimant.publicKey.toBuffer(),
+      ],
+      program.programId
     );
 
-    const claimIx = await program.methods
-      .claimQuestWithLpProof(
-        questBit,
-        new anchor.BN(lpAmount.toString()),
-        xpReward,
-        Array.from(signature)
-      )
-      .accounts({
-        campaign: campaignPda,
-        userRecord: userRecordPda,
-        user: userKeypair.publicKey,
-        sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-        systemProgram: SystemProgram.programId,
-      })
-      .instruction();
+    // Construct Attestation Payload
+    const campaignIdBuf = campaignId.toArrayLike(Buffer, "le", 8);
+    const socialQuestIdBuf = socialQuestId.toArrayLike(Buffer, "le", 8);
+    const message = Buffer.concat([
+      campaignIdBuf,
+      claimant.publicKey.toBuffer(),
+      videoHash,
+      socialQuestIdBuf,
+    ]);
 
-    const tx = new anchor.web3.Transaction().add(ed25519Ix).add(claimIx);
-    try {
-      await provider.sendAndConfirm(tx, [userKeypair]);
-      expect.fail("Should have failed with QuestAlreadyCompleted");
-    } catch (err: any) {
-      expect(err.message).to.include("QuestAlreadyCompleted");
-    }
-  });
+    const sig = nacl.sign.detached(message, oracle.secretKey);
 
-  it("4. Rejects claims with insufficient Pump the Pool 3 LP liquidity", async () => {
-    const questBit = 1;
-    const lowLp = BigInt(500_000_000); // 0.5 SOL < min 1.0 SOL
-    const xpReward = new anchor.BN(250);
-
-    const { ed25519Ix, signature } = await orchestrator.generateQuestAttestation(
-      userKeypair.publicKey,
-      questBit,
-      lowLp
-    );
-
-    const claimIx = await program.methods
-      .claimQuestWithLpProof(
-        questBit,
-        new anchor.BN(lowLp.toString()),
-        xpReward,
-        Array.from(signature)
-      )
-      .accounts({
-        campaign: campaignPda,
-        userRecord: userRecordPda,
-        user: userKeypair.publicKey,
-        sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-        systemProgram: SystemProgram.programId,
-      })
-      .instruction();
-
-    const tx = new anchor.web3.Transaction().add(ed25519Ix).add(claimIx);
-    try {
-      await provider.sendAndConfirm(tx, [userKeypair]);
-      expect.fail("Should have failed with InsufficientLpLiquidity");
-    } catch (err: any) {
-      expect(err.message).to.include("InsufficientLpLiquidity");
-    }
-  });
-
-  it("5. End-to-end triggers video synthesis engine for verified participant", async () => {
-    const videoEngine = new DynamicVideoEngine("/tmp/test_renders");
-    const videoPath = await videoEngine.renderVideo({
-      userPubkey: userKeypair.publicKey.toBase58(),
-      seasonId: seasonId,
-      lpAmountLamports: BigInt(2_500_000_000),
-      totalXp: 500,
-      completedQuests: ["Follow X", "Deposit DLMM", "Discord Role"],
-      txSignature: "5K2Xy...PumpPool3SimulatedTx",
+    const ed25519Ix = Ed25519Program.createInstructionWithPublicKey({
+      publicKey: oracle.publicKey.toBytes(),
+      message: message,
+      signature: sig,
     });
 
-    expect(videoPath).to.be.a("string");
-    expect(videoPath.endsWith(".mp4")).to.be.true;
+    const claimIx = await program.methods
+      .verifyAndClaimReward(
+        campaignId,
+        Array.from(videoHash) as any,
+        socialQuestId,
+        Array.from(sig) as any
+      )
+      .accounts({
+        campaign: campaignPda,
+        rewardVault: rewardVaultPda,
+        userClaim: userClaimPda,
+        claimantTokenAccount: claimantTokenAccount,
+        claimant: claimant.publicKey,
+        instructionsSysvar: SYSVAR_INSTRUCTIONS_PUBKEY,
+        systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .instruction();
+
+    const tx = new anchor.web3.Transaction().add(ed25519Ix).add(claimIx);
+
+    await provider.sendAndConfirm(tx, [claimant]);
+
+    // Assert claimant received exactly rewardPerClaim
+    const userAtaBalance = await getAccount(provider.connection, claimantTokenAccount);
+    expect(userAtaBalance.amount.toString()).to.equal(rewardPerClaim.toString());
+
+    // Assert UserClaim state was written
+    const claimState = await program.account.userClaim.fetch(userClaimPda);
+    expect(claimState.claimant.toBase58()).to.equal(claimant.publicKey.toBase58());
+    expect(claimState.rewardAmount.toString()).to.equal(rewardPerClaim.toString());
+  });
+
+  it("2. Rejects duplicate claim replay attack for the same claimant", async () => {
+    const claimantTokenAccount = await createAssociatedTokenAccount(
+      provider.connection,
+      admin,
+      rewardMint,
+      claimant.publicKey
+    ).catch(() => null); // ATA already exists
+
+    const [userClaimPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("user_claim"),
+        campaignId.toArrayLike(Buffer, "le", 8),
+        claimant.publicKey.toBuffer(),
+      ],
+      program.programId
+    );
+
+    const message = Buffer.concat([
+      campaignId.toArrayLike(Buffer, "le", 8),
+      claimant.publicKey.toBuffer(),
+      videoHash,
+      socialQuestId.toArrayLike(Buffer, "le", 8),
+    ]);
+    const sig = nacl.sign.detached(message, oracle.secretKey);
+
+    const ed25519Ix = Ed25519Program.createInstructionWithPublicKey({
+      publicKey: oracle.publicKey.toBytes(),
+      message: message,
+      signature: sig,
+    });
+
+    const ata = await anchor.utils.token.associatedAddress({
+      mint: rewardMint,
+      owner: claimant.publicKey,
+    });
+
+    const claimIx = await program.methods
+      .verifyAndClaimReward(
+        campaignId,
+        Array.from(videoHash) as any,
+        socialQuestId,
+        Array.from(sig) as any
+      )
+      .accounts({
+        campaign: campaignPda,
+        rewardVault: rewardVaultPda,
+        userClaim: userClaimPda,
+        claimantTokenAccount: ata,
+        claimant: claimant.publicKey,
+        instructionsSysvar: SYSVAR_INSTRUCTIONS_PUBKEY,
+        systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .instruction();
+
+    const tx = new anchor.web3.Transaction().add(ed25519Ix).add(claimIx);
+
+    try {
+      await provider.sendAndConfirm(tx, [claimant]);
+      expect.fail("Expected transaction to fail due to duplicate account initialization");
+    } catch (err: any) {
+      // Re-initialization of user_claim PDA is prevented by Anchor's `init` constraint
+      expect(err.toString()).to.include("already in use");
+    }
+  });
+
+  it("3. Rejects claim when oracle signature is forged by attacker", async () => {
+    const fakeOracle = Keypair.generate();
+    const attackerAta = await createAssociatedTokenAccount(
+      provider.connection,
+      attacker,
+      rewardMint,
+      attacker.publicKey
+    );
+
+    const [attackerClaimPda] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("user_claim"),
+        campaignId.toArrayLike(Buffer, "le", 8),
+        attacker.publicKey.toBuffer(),
+      ],
+      program.programId
+    );
+
+    const message = Buffer.concat([
+      campaignId.toArrayLike(Buffer, "le", 8),
+      attacker.publicKey.toBuffer(),
+      videoHash,
+      socialQuestId.toArrayLike(Buffer, "le", 8),
+    ]);
+    const fakeSig = nacl.sign.detached(message, fakeOracle.secretKey);
+
+    const ed25519Ix = Ed25519Program.createInstructionWithPublicKey({
+      publicKey: fakeOracle.publicKey.toBytes(),
+      message: message,
+      signature: fakeSig,
+    });
+
+    const claimIx = await program.methods
+      .verifyAndClaimReward(
+        campaignId,
+        Array.from(videoHash) as any,
+        socialQuestId,
+        Array.from(fakeSig) as any
+      )
+      .accounts({
+        campaign: campaignPda,
+        rewardVault: rewardVaultPda,
+        userClaim: attackerClaimPda,
+        claimantTokenAccount: attackerAta,
+        claimant: attacker.publicKey,
+        instructionsSysvar: SYSVAR_INSTRUCTIONS_PUBKEY,
+        systemProgram: SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .instruction();
+
+    const tx = new anchor.web3.Transaction().add(ed25519Ix).add(claimIx);
+
+    try {
+      await provider.sendAndConfirm(tx, [attacker]);
+      expect.fail("Expected transaction to fail with OraclePubkeyMismatch");
+    } catch (err: any) {
+      expect(err.toString()).to.include("OraclePubkeyMismatch");
+    }
   });
 });

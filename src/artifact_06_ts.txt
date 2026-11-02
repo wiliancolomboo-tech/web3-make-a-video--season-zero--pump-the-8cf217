@@ -1,0 +1,204 @@
+import "dotenv/config";
+import express from "express";
+import crypto from "node:crypto";
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  Transaction,
+  SystemProgram,
+} from "@solana/web3.js";
+import axios from "axios";
+
+const app = express();
+app.use(express.json());
+
+const PORT = Number(process.env.PORT ?? 8080);
+const RPC_URL = process.env.RPC_URL!;
+const VERIFIER_SECRET = process.env.VERIFIER_SECRET!;
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const ALERT_EMAIL = process.env.ALERT_EMAIL;
+
+if (!RPC_URL || !VERIFIER_SECRET) {
+  throw new Error("RPC_URL and VERIFIER_SECRET are required");
+}
+
+const connection = new Connection(RPC_URL, "confirmed");
+
+function verifier(): Keypair {
+  const bytes = Uint8Array.from(JSON.parse(VERIFIER_SECRET));
+  return Keypair.fromSecretKey(bytes);
+}
+
+function proofHash(input: unknown): number[] {
+  const canonical = JSON.stringify(input);
+  return [...crypto.createHash("sha256").update(canonical).digest()];
+}
+
+async function notify(message: string): Promise<void> {
+  const jobs: Promise<unknown>[] = [];
+
+  if (WEBHOOK_URL) {
+    jobs.push(
+      axios.post(WEBHOOK_URL, {
+        content: message,
+        text: message,
+      }, { timeout: 10_000 })
+    );
+  }
+
+  if (RESEND_API_KEY && ALERT_EMAIL) {
+    jobs.push(
+      axios.post(
+        "https://api.resend.com/emails",
+        {
+          from: "PumpPool Ops <onboarding@resend.dev>",
+          to: [ALERT_EMAIL],
+          subject: "PumpPool verification event",
+          text: message,
+        },
+        {
+          timeout: 10_000,
+          headers: {
+            Authorization: `Bearer ${RESEND_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+    );
+  }
+
+  await Promise.allSettled(jobs);
+}
+
+async function verifySocialPost(
+  platform: string,
+  externalId: string,
+  expectedParticipant: string,
+): Promise<boolean> {
+  if (platform === "demo") {
+    return externalId.length > 0;
+  }
+
+  if (platform === "x") {
+    const token = process.env.X_BEARER_TOKEN;
+    if (!token) throw new Error("X_BEARER_TOKEN is required for X verification");
+
+    const response = await axios.get(
+      `https://api.x.com/2/tweets/${encodeURIComponent(externalId)}`,
+      {
+        timeout: 10_000,
+        headers: { Authorization: `Bearer ${token}` },
+        params: { "tweet.fields": "author_id,created_at,text" },
+      },
+    );
+
+    const text = String(response.data?.data?.text ?? "");
+    const author = String(response.data?.data?.author_id ?? "");
+
+    // Production deployments must map Solana wallets to verified social identities.
+    return author.length > 0 &&
+      text.includes(process.env.CAMPAIGN_HASHTAG ?? "#PumpPool") &&
+      expectedParticipant.length === 44;
+  }
+
+  throw new Error(`Unsupported platform: ${platform}`);
+}
+
+app.get("/healthz", (_req, res) => {
+  res.json({ ok: true, service: "pump-pool-verifier" });
+});
+
+app.get("/readyz", async (_req, res) => {
+  try {
+    const slot = await connection.getSlot();
+    res.json({ ok: true, slot });
+  } catch {
+    res.status(503).json({ ok: false });
+  }
+});
+
+app.post("/verify", async (req, res) => {
+  try {
+    const {
+      quest,
+      campaign,
+      participant,
+      platform,
+      externalId,
+      approveTransactionBase64,
+    } = req.body;
+
+    if (
+      typeof quest !== "string" ||
+      typeof campaign !== "string" ||
+      typeof participant !== "string" ||
+      typeof platform !== "string" ||
+      typeof externalId !== "string" ||
+      typeof approveTransactionBase64 !== "string"
+    ) {
+      return res.status(400).json({ error: "invalid request" });
+    }
+
+    new PublicKey(quest);
+    new PublicKey(campaign);
+    new PublicKey(participant);
+
+    const approved = await verifySocialPost(
+      platform,
+      externalId,
+      participant,
+    );
+
+    const evidence = {
+      version: 1,
+      quest,
+      participant,
+      platform,
+      externalId,
+      decision: approved ? "approved" : "rejected",
+      observedAt: new Date().toISOString(),
+    };
+
+    const hash = proofHash(evidence);
+
+    /*
+     * The frontend or transaction builder supplies a transaction containing
+     * verify_submission(approved), with the verifier account as signer.
+     * The worker signs and submits it after independently checking evidence.
+     */
+    const tx = Transaction.from(
+      Buffer.from(approveTransactionBase64, "base64"),
+    );
+
+    tx.partialSign(verifier());
+
+    const signature = await connection.sendRawTransaction(
+      tx.serialize(),
+      { skipPreflight: false },
+    );
+
+    await connection.confirmTransaction(signature, "confirmed");
+
+    await notify(
+      `${approved ? "Approved" : "Rejected"} quest submission\n` +
+      `participant=${participant}\nquest=${quest}\nsignature=${signature}`,
+    );
+
+    return res.json({
+      approved,
+      evidence,
+      proofHash: hash,
+      signature,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "unknown error";
+    await notify(`PumpPool verifier error: ${message}`);
+    return res.status(500).json({ error: message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`verifier listening on :${PORT}`);
+});

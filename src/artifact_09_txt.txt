@@ -1,0 +1,14 @@
+OPERATIONAL RUNBOOK: RECOVERY & METRICS
+                         
++--------------------------+------------------------------------+---------------------------------------+
+| Incident                 | Symptom                            | Mitigation Path                       |
++--------------------------+------------------------------------+---------------------------------------+
+| RPC Rate Limit (429)     | Oracle daemon stops polling        | Set fallback secondary RPC endpoint   |
+|                          |                                    | in SOLANA_RPC_BACKUP_URL.             |
++--------------------------+------------------------------------+---------------------------------------+
+| Pool Vault Depleted      | Payout calls revert with           | Execute: `npm run pump:pool --        |
+|                          | `InsufficientPoolLiquidity`        | --amount 1000000000` via funder wallet.|
++--------------------------+------------------------------------+---------------------------------------+
+| Suspected Malicious Farm | Rapid duplicate quest spam         | Call `set_paused(true)` via admin key |
+|                          |                                    | to freeze all claims instantly.       |
++--------------------------+------------------------------------+---------------------------------------+

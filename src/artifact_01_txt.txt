@@ -1,12 +1,8 @@
-+-------------------------------------------------------------------------------------------------------+
-|                                    ENTERPRISE ARCHITECTURE OVERVIEW                                   |
-|                                                                                                       |
-|  [ User / LP ] ---> [ Dynamic Pool 3 (Meteora DLMM) ] ---> [ Anchor Season Zero Contract ]             |
-|          |                                                             |                              |
-|          | (Completes Social Quests)                                   | (On-Chain Quest Attestation) |
-|          v                                                             v                              |
-|  [ Social Verification Oracle ] ---> [ Ed25519 Signature ] ---> [ Automated Video Pipeline ]          |
-|                                                                        |                              |
-|                                                                        v                              |
-|                                             [ 1080p MP4 Dynamic Video + Discord / Resend Alerts ]     |
-+-------------------------------------------------------------------------------------------------------+
+[SOLANA QUESTVISION ENGINE]
+                                                │
+                 ┌──────────────────────────────┴──────────────────────────────┐
+                 ▼                                                             ▼
+     [Off-Chain Video & Quest Agent]                               [On-Chain Anchor Program]
+  • Programmatic Remotion/FFmpeg Pipeline                       • PDA Vaults & LP Verification
+  • Cryptographic Video Fingerprinting (SHA-256)                • Ed25519 Oracle Proof Attestation
+  • Social Quest Aggregator & Discord Webhook                   • Atomic SPL Token / SOL Reward Claims

@@ -1,0 +1,8 @@
+SOLANA_RPC_URL="https://api.devnet.solana.com"
+ORACLE_PRIVATE_KEY="[...json-byte-array...]"
+USER_PRIVATE_KEY="[...json-byte-array...]"
+PROGRAM_ID="PumpZeroQuest11111111111111111111111111111111"
+DISCORD_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
+RESEND_API_KEY="re_123456789abcdef"
+NOTIFICATION_EMAIL="sponsor@solana-ecosystem.io"
+PORT=8080

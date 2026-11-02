@@ -1,0 +1,8 @@
+Zero manual spreadsheets. Zero Sybil leaks. 100% deterministic Solana speed.
+
+Full open-source suite:
+✅ Anchor Contract & Ed25519 Oracle
+✅ Automated Remotion video rendering pipeline
+✅ Turnkey Docker container + Resend receipts
+
+Check the live submission repo & docs: https://github.com/season-zero-solana/pump-the-pool-3 🚀

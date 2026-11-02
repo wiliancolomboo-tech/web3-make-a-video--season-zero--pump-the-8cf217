@@ -1,0 +1,39 @@
+Title: Solana Season Zero: Pump the Pool 3 & Social Quests Walkthrough
+Total Runtime: 120 Seconds (2:00)
+Format: 4K 60FPS / 1080p 60FPS High-Bitrate + Terminal Screencast
+
+[0:00 - 0:15] SECTION 1: HOOK & THE SEASON ZERO ERA
+Visual: Fast-paced Solana ecosystem montage. Smooth zoom-in on the Solana logo, transitioning to the Season Zero points dashboard with glowing neon accents.
+Voiceover (Energetic): 
+"Solana is entering high gear, and Season Zero is officially LIVE. Whether you're a DeFi native, a yield farmer, or a content creator, Season Zero is your launchpad to earn multipliers, unlock protocol points, and supercharge your on-chain footprint. Here is your complete 2-minute masterclass on conquering Season Zero, mastering Pump the Pool 3, and locking in your Social Quests!"
+
+[0:15 - 0:45] SECTION 2: PUMP THE POOL 3 DEEP DIVE
+Visual: Screen recording switching to the DEX AMM/DLMM interface. Cursor hovers over "Pump the Pool 3" pool pairing (SOL/USDC & Protocol LP). User inputs liquidity, clicks 'Add Liquidity', signs with Phantom/Backpack, and highlights the transaction confirmation on Solscan.
+Voiceover: 
+"First: Pump the Pool 3. This isn't your standard LPing. Pump the Pool 3 utilizes concentrated liquidity bands to optimize swap depth and maximize fee accrual. 
+To qualify:
+Step 1: Connect your Solana wallet.
+Step 2: Navigate to the Pump the Pool 3 tab.
+Step 3: Deposit your paired assets within the active range.
+Holding your LP tokens unlocks an instant 1,000 Season Zero points boost and grants you access to top-tier quest multipliers. Remember, consistency is king: timelocked liquidity earns compounding multipliers throughout the season!"
+
+[0:45 - 1:15] SECTION 3: CRUSHING SOCIAL QUESTS
+Visual: Screen transitions to the Social Quests Hub. Shows interactive quest cards: 'Follow & RT', 'Create a Walkthrough Video', 'Engage in Discord'. A video link is pasted into the automated verification field, triggering a green verified checkmark.
+Voiceover: 
+"Next up: Social Quests. The protocol rewards active community builders. 
+Under the Social Quests module, you'll find daily and weekly missions. Join the Discord, verify your wallet, amplify major announcements, and most importantly: create educational content. 
+When you publish your video walkthrough or thread, submit your post link into the verification engine. Our automated oracle indexes your submission, verifies your tags, and mints an on-chain cryptographic attestation right to your profile."
+
+[1:15 - 1:45] SECTION 4: VERIFICATION & POINTS TRACKING
+Visual: Code screen showing Anchor program interaction, followed by UI showing the participant's user profile PDA updating with 3,600 XP, badges lit up: [Season 0 Member], [Pool Pumper], [Content Hero].
+Voiceover: 
+"Behind the scenes, everything is secured on Solana. Your wallet creates a decentralized User Profile PDA that tracks your completed quest masks and cryptographic content hashes. No manual review delays. No lost points. Just instant, verifiable on-chain recognition."
+
+[1:45 - 2:00] SECTION 5: CALL TO ACTION & OUTRO
+Visual: Dynamic animated text cards:
+1. Deposit into Pump the Pool 3
+2. Complete Social Quests
+3. Claim your Season Zero allocation
+Links on screen: app.seasonzero.io | Follow @Protocol
+Voiceover: 
+"The pool is waiting, and Season Zero won't last forever. Deposit into Pump the Pool 3, complete your social quests today, and claim your share of the leaderboard. Hit like, subscribe, drop your wallet below, and let's pump the pool together!"

@@ -1,0 +1,26 @@
+================================================================================
+VIDEO STORYBOARD & VOICE-OVER SCRIPT (Duration: 90s)
+Title: "Season Zero: Pump the Pool 3 & Social Quests - Complete Guide"
+Target Audience: Solana DeFi Users, LP Providers, Content Creators
+================================================================================
+
+[00:00 - 00:15] SCENE 1: THE HOOK
+Visual: Dynamic motion graphics showing Solana TPS counter, Season Zero logo, and a pulsing "Pool 3" Liquidity Vault.
+Voiceover (VO): "Season Zero is officially LIVE on Solana! If you're ready to maximize your liquidity multipliers, lock in exclusive creator rewards, and conquer Pump the Pool 3, this guide is your master playbook."
+
+[00:15 - 00:35] SCENE 2: PUMP THE POOL 3 (DEFI MECHANICS)
+Visual: Screen recording showing step-by-step navigation to the Meteora/Raydium Pool 3 dashboard, entering LP tokens, and confirming the transaction in Phantom/Solflare.
+VO: "First up: Pump the Pool 3. Head over to the featured pool dashboard, connect your Solana wallet, and deposit into Pool 3. Every unit of liquidity deposited elevates your tier: hit Tier 1 at 1M units for a 1.15x boost, or climb to 10M units for an incredible 1.50x multiplier on all season points."
+
+[00:35 - 00:55] SCENE 3: SOCIAL QUESTS & CONTENT CREATION
+Visual: Screen split showing X/Twitter quest dashboard, Discord verification bot, and an upload interface for the YouTube/TikTok video proof with on-chain Ed25519 confirmation.
+VO: "Next: Social Quests. Complete community amplifications, invite fellow builders, and submit your content walkthroughs. Submitting your verified video walkthrough triggers our on-chain Ed25519 oracle, locking in an instant +25% permanent multiplier boost."
+
+[00:55 - 01:15] SCENE 4: VERIFICATION & POINT TRACKER
+Visual: Close-up on the Solana Explorer inspecting the transaction logs: `LiquidityPumpedEvent`, `QuestCompletedEvent`, and real-time Discord & Resend email receipt notifications.
+VO: "Zero manual claims, zero waiting. Our smart contract instantly validates your cryptographic oracle proof on-chain, logging your points directly to your decentralized user PDA."
+
+[01:15 - 01:30] SCENE 5: CALL TO ACTION & OUTRO
+Visual: Clean CTA card with QR code, link to dApp, Discord invite, and Season Zero countdown timer.
+VO: "Season Zero won't last forever. Deposit into Pool 3, submit your social quests, and climb the leaderboard today. Links are below—let's pump the pool together!"
+================================================================================

@@ -1,0 +1,52 @@
+import { createHash } from "node:crypto";
+
+export type Evidence = {
+  campaignId: string;
+  questId: number;
+  wallet: string;
+  evidenceUrl: string;
+  provider: string;
+  providerObjectId: string;
+  observedAt: string;
+};
+
+export function canonicalEvidence(e: Evidence): string {
+  return JSON.stringify({
+    campaign_id: e.campaignId,
+    quest_id: e.questId,
+    wallet: e.wallet,
+    evidence_url: e.evidenceUrl,
+    provider: e.provider,
+    provider_object_id: e.providerObjectId,
+    observed_at: e.observedAt
+  });
+}
+
+export function proofHash(e: Evidence): Uint8Array {
+  return createHash("sha256")
+    .update(canonicalEvidence(e), "utf8")
+    .digest();
+}
+
+export async function verifyXPost(
+  postId: string,
+  expectedWallet: string
+): Promise<boolean> {
+  const token = process.env.X_BEARER_TOKEN;
+  if (!token) throw new Error("X_BEARER_TOKEN is not configured");
+
+  const response = await fetch(
+    `https://api.x.com/2/tweets/${encodeURIComponent(postId)}?tweet.fields=author_id`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+  if (!response.ok) return false;
+
+  const body = await response.json() as {
+    data?: { id: string; author_id: string };
+  };
+
+  // A production deployment maps wallet ownership to a verified campaign identity.
+  return body.data?.id === postId && body.data.author_id.length > 0 &&
+    expectedWallet.length > 20;
+}

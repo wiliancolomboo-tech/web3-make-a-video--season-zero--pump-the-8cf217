@@ -1,0 +1,76 @@
+{
+  "deliverable_id": "superteam_98dc1d8cf217",
+  "opportunity_id": "st-9fd7fab8-8101-4309-9350-e6fb806fdddf",
+  "platform": "SuperteamEarn",
+  "title": "Make a Video: Season Zero, Pump the Pool 3 and Social Quests",
+  "url": "https://earn.superteam.fun/listings/bounty/make-a-video-season-zero-pump-the-pool-3-and-social-quests",
+  "budget": "500 USDC",
+  "prize_amount": 500.0,
+  "ecosystem": "Solana",
+  "github_url": "https://github.com/wiliancolomboo-tech/web3-make-a-video--season-zero--pump-the-8cf217",
+  "status": "validation_warning",
+  "validation_reports": [
+    {
+      "file": "artifact_01_txt.txt",
+      "language": "txt",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_02_mermaid.txt",
+      "language": "mermaid",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_03_txt.txt",
+      "language": "txt",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_04_rust.rs",
+      "language": "rust",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_05_typescript.ts",
+      "language": "typescript",
+      "valid": false,
+      "error": "Mismatched bracket '(' with ']'"
+    },
+    {
+      "file": "artifact_06_typescript.ts",
+      "language": "typescript",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_07_dockerfile.txt",
+      "language": "dockerfile",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_08_yaml.yaml",
+      "language": "yaml",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_09_bash.sh",
+      "language": "bash",
+      "valid": true,
+      "error": null
+    },
+    {
+      "file": "artifact_10_bash.sh",
+      "language": "bash",
+      "valid": true,
+      "error": null
+    }
+  ],
+  "git_initialized": true,
+  "created_at": "2026-10-14 23:00:53"
+}

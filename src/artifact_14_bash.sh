@@ -1,0 +1,1 @@
+find /app/public/renders -name "*.mp4" -mtime +1 -delete

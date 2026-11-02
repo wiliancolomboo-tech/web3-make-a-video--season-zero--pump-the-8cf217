@@ -1,0 +1,1 @@
+vault_balance < outstanding_reward_liability

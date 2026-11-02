@@ -1,0 +1,6 @@
+SOLANA_RPC_URL="https://api.devnet.solana.com"
+PROGRAM_ID="PUMP3QxKxTqV2u7vJ7GfX4WkL2k9L8M7N1P5R6S8T9U"
+ORACLE_PRIVATE_KEY="<HEX_ENCODED_64_BYTE_ORACLE_KEYPAIR>"
+DISCORD_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
+RESEND_API_KEY="re_1234567890abcdef"
+PORT=8080

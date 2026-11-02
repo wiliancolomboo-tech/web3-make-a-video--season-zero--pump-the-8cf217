@@ -1,0 +1,11 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_NETWORK=devnet
+PROGRAM_ID=AuraQpTP3SeasonZero11111111111111111111111111
+
+# Enterprise Webhook & Transactional Notifications
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789_abcdefghijklmnopqrstuvwxyz
+
+# Vault & Oracle Authority
+ORACLE_PRIVATE_KEY=[12,34,56,...]
+ADMIN_WALLET_PATH=./deployer-keypair.json

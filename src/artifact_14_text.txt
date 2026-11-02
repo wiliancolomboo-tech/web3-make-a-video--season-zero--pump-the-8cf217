@@ -1,0 +1,7 @@
+How it works:
+1️⃣ Creators submit video walkthroughs for "Pump the Pool 3"
+2️⃣ Off-chain engine validates engagement & DEX pool depth via @MeteoraAG / @RaydiumProtocol
+3️⃣ Keccak256 Merkle trees posted on-chain to our Anchor smart contract
+4️⃣ Sub-second, non-custodial reward claims with 0 Sybil risk
+
+No spreadsheets. 100% deterministic code.

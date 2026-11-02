@@ -1,0 +1,9 @@
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[programs.devnet]
+proofpool = "PoofPL1111111111111111111111111111111111111"
+
+[scripts]
+test = "yarn ts-mocha -p ./tsconfig.json tests/**/*.ts"

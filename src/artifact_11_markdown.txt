@@ -1,0 +1,14 @@
+🧵 1/3: Season Zero is officially here on @Solana, and we're taking DeFi incentive mechanisms to the next level with "Pump the Pool 3 & Social Quests"! 
+
+Here is our full breakdown on how on-chain LP staking meets automated cryptographic social proofs ⚡️👇
+[Link to Video / Demonstration]
+
+🧵 2/3: Powered by our custom Anchor program (`season_zero_engine`), participating is 100% automated:
+🌊 Deposit into Pool 3 for tiered multiplier boosts (up to 1.5x)
+🎥 Publish your video walkthrough for an instant +25% permanent boost
+🔐 Zero-trust Ed25519 oracle verification & instant notifications via @resend
+
+🧵 3/3: Full open-source architecture, turnkey Docker microservices, deterministic test suite, and broadcast storyboard ready for community rollout! 
+
+Dive into the code and claim your Season Zero allocations now:
+github.com/solana-season-zero/engine 🚀

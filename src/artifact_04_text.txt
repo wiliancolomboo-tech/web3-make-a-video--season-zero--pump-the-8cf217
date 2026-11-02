@@ -1,0 +1,37 @@
+================================================================================
+VIDEO STORYBOARD & SCRIPT SPECIFICATION
+Title: "Season Zero: Pump the Pool 3 & Social Quests"
+Duration: 60 Seconds | Resolution: 3840x2160 (4K UHD) | FPS: 60
+Target Ecosystem: Solana AMMs / Dynamic Liquidity Pools
+================================================================================
+
+[00:00 - 00:10] SCENE 1: THE LIQUIDITY DAWN (Season Zero Launch)
+- Visual: Cyberpunk Solana purple-to-emerald gradient vortex. Cinematic 3D text "SEASON ZERO IS LIVE".
+- Voiceover (AI Neural Synth / British Accent):
+  "Liquidity pioneers, welcome to Season Zero. The next evolution of high-octane Solana yield has arrived."
+- On-Screen Text: "SEASON ZERO: BOOTSTRAP PHASE"
+
+[00:10 - 00:25] SCENE 2: PUMP THE POOL 3 (Mechanics Breakdown)
+- Visual: Dynamic AMM curve accelerating upward. "Pool 3" liquidity meter hits 100%. Gold APY counters surge.
+- Voiceover:
+  "Step into Pump the Pool 3. Deposit SOL and LP tokens to unlock protocol-owned depth, earning exponential Season Zero points every block."
+- On-Screen Text: "PUMP THE POOL 3: 10,000 PTS / SOL LP DEPOSITED"
+
+[00:25 - 00:40] SCENE 3: SOCIAL QUESTS & POINT MULTIPLIERS
+- Visual: Holographic mission cards popping up: 'Retweet Season Zero Announcement', 'Bridge & Swap', 'Discord Role Attestation'.
+- Voiceover:
+  "Level up with Social Quests. Complete verified on-chain and off-chain missions to unlock up to 50% compound yield multipliers. Every quest is cryptographically sealed by our Ed25519 Oracle."
+- On-Screen Text: "QUEST COMPLETE -> +10% TO +50% REWARD MULTIPLIER"
+
+[00:40 - 00:55] SCENE 4: REAL-TIME LEADERBOARD & REWARD REDEMPTION
+- Visual: User avatar climbing to Rank #1 on the live Solana Leaderboard. Claim button triggers an instant glowing transaction ripple.
+- Voiceover:
+  "Track your rank in real time, build your squad, and prepare for the ultimate Season Zero Genesis Airdrop."
+- On-Screen Text: "GENESIS AIRDROP REDEMPTION ALLOCATION"
+
+[00:55 - 01:00] SCENE 5: CALL TO ACTION
+- Visual: Blazing Solana logo with CTA button: "JOIN PUMP THE POOL 3 NOW". Official handles displayed.
+- Voiceover:
+  "Pump the Pool 3 is live today. Connect your wallet, complete your quests, and conquer Season Zero."
+- On-Screen Text: "PUMP.SOLANA.NETWORK | QUEST NOW"
+================================================================================

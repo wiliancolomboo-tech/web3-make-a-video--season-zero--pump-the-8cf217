@@ -1,0 +1,43 @@
++---------------------------------------------------------------------------------------------------+
+| VIDEO RUNTIME: 90 SECONDS | RESOLUTION: 4K UHD (3840x2160 @ 60 FPS) | ASPECT: 16:9 & 9:16 CUTS     |
++---------------------------------------------------------------------------------------------------+
+| SCENE 01: [00:00 - 00:15] - THE GENESIS HOOK (SEASON ZERO LAUNCH)                                 |
+| Visual: Fast camera whip into neon-cyberpunk 3D Solana Sol-city. Glowing portal displays          |
+|         "SEASON ZERO" in floating chromatic typography with Particle FX explosions.               |
+| SFX: Sub-bass drop + high-tech mechanical charging sound.                                         |
+| Audio (VO): "Season Zero has arrived on Solana. The era of passive waiting is dead. Right now,   |
+|             the gates are open to conquer our biggest liquidity bootstrapping event yet:          |
+|             Pump the Pool 3!"                                                                     |
++---------------------------------------------------------------------------------------------------+
+| SCENE 02: [00:15 - 00:35] - CORE ENGINE BREAKDOWN: PUMP THE POOL 3                                |
+| Visual: Screen splits to show a dynamic concentrated liquidity AMM curve. Dual token nodes        |
+|         (SOL/USDC) gravitate into the center. APY counter rapidly climbs with a 3.5x multiplier.   |
+| On-Screen Graphics: Callout boxes highlighting: "Concentrated Liquidity", "Zero Slippage",        |
+|                     "Real Yield Multipliers".                                                     |
+| Audio (VO): "Pump the Pool 3 isn't just another LP campaign. We've introduced algorithmic yield   |
+|             routing, zero-slippage rebalancing, and unprecedented vault rewards. By locking your  |
+|             liquidity into Pool 3, you unlock tier-one emission rewards backed directly by on-    |
+|             chain fee share."                                                                     |
++---------------------------------------------------------------------------------------------------+
+| SCENE 03: [00:35 - 00:55] - THE SOCIAL QUESTS LAYER & ON-CHAIN PROOFS                             |
+| Visual: High-velocity UI screencast showing user connecting Phantom/Solflare wallet, publishing a  |
+|         YouTube walkthrough, and inputting the URL into the PoCL Quest Portal. Ed25519 signature  |
+|         confirmation ticks green in 400 milliseconds.                                             |
+| Audio (VO): "Want to supercharge your yield? Enter Social Quests. Create breakdown videos, share  |
+|             your LP strategies on X and YouTube, and earn instant cryptographic bounties. Our     |
+|             on-chain oracle verifies your content and LP tokens automatically—no forms, no        |
+|             delays, just pure programmatic payouts."                                              |
++---------------------------------------------------------------------------------------------------+
+| SCENE 04: [00:55 - 01:15] - STEP-BY-STEP PARTICIPATION TUTORIAL                                   |
+| Visual: Cursor navigates 3 intuitive clicks:                                                      |
+|         Step 1: 'Deposit to Pool 3' -> Step 2: 'Mint LP Position' -> Step 3: 'Submit Quest Proof'|
+| Audio (VO): "Getting started takes three simple steps: One: Deposit SOL and USDC into Pool 3.    |
+|             Two: Hold your LP position tokens. Three: Submit your video content to claim your     |
+|             Season Zero XP and token rewards."                                                    |
++---------------------------------------------------------------------------------------------------+
+| SCENE 05: [01:15 - 01:30] - CALL TO ACTION & OUTRO                                                |
+| Visual: 3D Solana logo pulsates with gold and purple particle beams. Prominent button animates:   |
+|         [JOIN SEASON ZERO NOW] with QR Code linking to repository and claim portal.              |
+| Audio (VO): "Season Zero will not wait for you. Pump the pool, complete your quests, and claim   |
+|             your stake in the Solana revolution today. Link in description!"                      |
++---------------------------------------------------------------------------------------------------+

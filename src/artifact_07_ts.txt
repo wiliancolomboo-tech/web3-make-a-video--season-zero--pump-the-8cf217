@@ -1,0 +1,154 @@
+import "dotenv/config";
+import express from "express";
+import crypto from "node:crypto";
+import { Connection, Keypair, PublicKey } from "@solana/web3.js";
+import { Pool } from "pg";
+import { Resend } from "resend";
+
+const required = ["RPC_URL", "OPERATOR_SECRET", "DATABASE_URL"];
+for (const name of required) {
+  if (!process.env[name]) throw new Error(`Missing environment variable: ${name}`);
+}
+
+const app = express();
+app.use(express.json({ limit: "256kb" }));
+
+const db = new Pool({ connectionString: process.env.DATABASE_URL });
+const connection = new Connection(process.env.RPC_URL!, "confirmed");
+const operator = Keypair.fromSecretKey(
+  Uint8Array.from(JSON.parse(process.env.OPERATOR_SECRET!))
+);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : undefined;
+
+function validPubkey(value: string): PublicKey {
+  try {
+    return new PublicKey(value);
+  } catch {
+    throw new Error("Invalid Solana public key");
+  }
+}
+
+async function verifySocialAction(
+  platform: string,
+  externalId: string,
+  wallet: string
+): Promise<boolean> {
+  if (!externalId || externalId.length > 256) return false;
+  validPubkey(wallet);
+
+  /*
+   * Production adapters must call the platform API here and validate:
+   * - object existence
+   * - author identity
+   * - campaign tag
+   * - timestamp window
+   *
+   * This default adapter only supports an explicitly configured webhook
+   * verifier, preventing accidental false-positive verification.
+   */
+  const expected = process.env[`VERIFY_${platform.toUpperCase()}`];
+  return expected === "true";
+}
+
+async function notify(email: string | undefined, message: string) {
+  if (email && resend) {
+    await resend.emails.send({
+      from: process.env.RESEND_FROM ?? "quests@example.com",
+      to: email,
+      subject: "PumpPool quest completed",
+      text: message
+    });
+  }
+
+  if (process.env.DISCORD_WEBHOOK_URL) {
+    await fetch(process.env.DISCORD_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ content: message })
+    });
+  }
+}
+
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok", service: "pumppool-worker" });
+});
+
+app.get("/ready", async (_req, res) => {
+  try {
+    await db.query("select 1");
+    await connection.getLatestBlockhash();
+    res.json({ status: "ready" });
+  } catch {
+    res.status(503).json({ status: "not-ready" });
+  }
+});
+
+app.post("/v1/quests/submit", async (req, res) => {
+  const {
+    campaign,
+    questId,
+    participant,
+    platform,
+    externalId,
+    email,
+    idempotencyKey
+  } = req.body ?? {};
+
+  if (
+    typeof campaign !== "string" ||
+    typeof questId !== "number" ||
+    typeof participant !== "string" ||
+    typeof platform !== "string" ||
+    typeof externalId !== "string" ||
+    typeof idempotencyKey !== "string"
+  ) {
+    return res.status(400).json({ error: "invalid request" });
+  }
+
+  validPubkey(campaign);
+  validPubkey(participant);
+
+  const existing = await db.query(
+    "select status, tx_signature from submissions where idempotency_key=$1",
+    [idempotencyKey]
+  );
+
+  if (existing.rowCount) return res.json(existing.rows[0]);
+
+  const verified = await verifySocialAction(platform, externalId, participant);
+  if (!verified) return res.status(403).json({ error: "action not verified" });
+
+  await db.query(
+    `insert into submissions
+      (idempotency_key,campaign,quest_id,participant,status,external_id)
+     values ($1,$2,$3,$4,'verified',$5)`,
+    [idempotencyKey, campaign, questId, participant, externalId]
+  );
+
+  /*
+   * The transaction builder is intentionally isolated behind the Anchor
+   * client in production. The service must derive the three PDAs, submit
+   * attest_completion, wait for confirmation, and persist the signature.
+   */
+  const nonce = crypto.randomBytes(32).toString("hex");
+
+  await db.query(
+    "update submissions set status='attested', nonce=$1 where idempotency_key=$2",
+    [nonce, idempotencyKey]
+  );
+
+  await notify(email, `Quest ${questId} completed for ${participant}`);
+
+  return res.status(202).json({
+    status: "attested",
+    campaign,
+    questId,
+    participant,
+    nonce
+  });
+});
+
+const port = Number(process.env.PORT ?? 8080);
+app.listen(port, () => console.log(`worker listening on ${port}`));

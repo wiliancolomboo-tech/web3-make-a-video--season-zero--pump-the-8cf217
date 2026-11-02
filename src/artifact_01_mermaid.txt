@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph Client Layer
+        U[User / Creator] -->|1. Submits Video & Social Quest Proof| API[QuestStream Fastify Gateway]
+        U -->|2. Locks LP Tokens 'Pump the Pool 3'| SC[Solana QuestStream Program]
+    end
+
+    subgraph Off-Chain Verification & Oracle Worker
+        API -->|Fetch Video Meta & Perceptual Hash| VP[Video Ingestion Worker]
+        VP -->|Check YouTube / X API & Transcripts| EXT[Social Media APIs]
+        VP -->|Compute SHA256 & pHash| CH[Content Hash Guard]
+        CH -->|Generate Oracle Ed25519 Attestation| ORACLE[Oracle Signer Keypair]
+    end
+
+    subgraph Solana Runtime Engine
+        ORACLE -->|3. Signed Instruction: verify_video_quest| SC
+        SC -->|Store pHash in PDA| PDAVideo[Video Proof PDA]
+        SC -->|Update User Progress PDA| PDAUser[User Account PDA]
+        SC -->|Escrow LP Tokens in Vault| PDAVault[Pool Vault Token Account]
+        SC -->|4. Claim Reward| REW[Reward Vault SPL Engine]
+    end
+
+    subgraph Enterprise Telemetry & Notification
+        SC -->|Emit Anchor Events via RPC Logs| WS[Helius / QuickNode Geyser / WS]
+        WS -->|Process Event Hook| NOTIF[Enterprise Dispatcher]
+        NOTIF -->|Publish Settlement Alert| DISCORD[Discord Webhook]
+        NOTIF -->|Audit Record| SLACK[Slack SecOps Channel]
+        NOTIF -->|User Confirmation Email| RESEND[Resend Transactional API]
+    end
+
+    REW -->|Transfer Reward Tokens| U

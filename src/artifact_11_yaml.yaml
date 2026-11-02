@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  quest-oracle-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auraquest_season_zero_worker
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - ORACLE_KEYPAIR_PATH=/run/secrets/oracle_keypair.json
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+    volumes:
+      - ./oracle-keypair.json:/run/secrets/oracle_keypair.json:ro
+      - ./renders:/usr/src/app/renders
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

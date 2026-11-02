@@ -1,0 +1,32 @@
+=============================================================================
+TITLE: "SOLANA SEASON ZERO: PUMP THE POOL 3 & SOCIAL QUESTS"
+DURATION: 60 SECONDS (1080x1920 VERTICAL & 1920x1080 WIDESCREEN COMPATIBLE)
+STYLE: HIGH-OCTANE CYBERPUNK / HIGH-ENERGY WEB3 MOTION DESIGN
+AUDIO: SYNTHWAVE / FAST BREAKBEAT WITH SOLANA FREQUENCY DROPS
+=============================================================================
+
+[00:00 - 00:10] SCENE 1: THE CALL TO ADVENTURE
+Visual: Holographic Solana logo exploding into neon green neon lines.
+Text Overlay: "SEASON ZERO IS LIVE. ARE YOU LIQUID?"
+Voiceover: "Season Zero has arrived on Solana. The biggest liquidity and content
+quest ever deployed is waiting for you."
+
+[00:10 - 00:25] SCENE 2: PUMP THE POOL 3
+Visual: 3D Liquidity Pool representation glowing with +2X Boost badges.
+Text Overlay: "PUMP THE POOL 3: LOCK LP -> UNLOCK MULTIPLIERS"
+Voiceover: "Deposit into Pump the Pool 3. Earn base yield plus Season Zero 
+Multiplier Points verified directly on-chain."
+
+[00:25 - 00:45] SCENE 3: SOCIAL VIDEO QUESTS
+Visual: Split-screen displaying community creators, viral video clips, and 
+real-time cryptographic hash verification checks.
+Text Overlay: "CREATE. TAG. ATTEST. 2X BOOST FOR LP PROVIDERS."
+Voiceover: "Produce your video, break down the mechanics, share your quest on X,
+and let the Ed25519 oracle verify your submission in sub-second Solana time."
+
+[00:45 - 01:00] SCENE 4: CLAIM & DOMINATE
+Visual: Dynamic leaderboard ascending to Tier 1, ending with CTA button.
+Text Overlay: "JOIN SEASON ZERO NOW. PUMP THE POOL."
+Voiceover: "Don't sit on the sidelines. Pump the Pool 3, complete your social 
+quests, and secure your place on the Season Zero leaderboard today!"
+=============================================================================

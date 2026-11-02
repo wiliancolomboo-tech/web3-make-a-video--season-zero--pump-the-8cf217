@@ -1,0 +1,29 @@
+TITLE: "Season Zero: Unleashing Pump the Pool 3 & Social Quests"
+TOTAL RUNTIME: 02:15 (135 seconds)
+AUDIO SPEC: 48kHz, Stereo, Mastered at -14 LUFS
+VISUAL SPEC: 4K 60FPS, Solana High-Tech Dark Mode UI
+
+[00:00 - 00:20] SCENE 1: THE HOOK & SEASON ZERO UNVEIL
+- Visual: Fast 3D camera pan over Solana logo refracting purple/green lasers into liquidity depth charts.
+- Overlay Text: "SEASON ZERO IS LIVE. LIQUIDITY MEETS CONTENT."
+- Voiceover: "Welcome to Season Zero. The next evolution of Solana ecosystem incentives has officially arrived. Today, we're not just trading tokens—we're bootstrapping the most resilient liquidity on high-throughput rails. Introducing: Pump the Pool 3 and Social Quests."
+
+[00:20 - 00:55] SCENE 2: PUMP THE POOL 3 DEEP DIVE
+- Visual: Screen capture of Raydium/Meteora/Orca Pool 3 interface. User deposits SOL/USDC, LP tokens minted, wallet balance updates.
+- Overlay Text: "STEP 1: LOCK LP IN POOL 3 -> EARN 5,000 BASE PTS"
+- Voiceover: "Let's break down 'Pump the Pool 3'. Liquidity isn't passive anymore—it's gamified. By providing liquidity to the designated Pool 3, your position is verified natively on-chain by the SolQuest Engine. No manual claim tickets, no delay. The moment your LP balance hits the threshold, you lock in an instant 5,000 base points towards the Season Zero Reward Pool."
+
+[00:55 - 01:30] SCENE 3: SOCIAL QUESTS & CONTENT CREATION MULTIPLIERS
+- Visual: Dynamic split-screen. Left: Video editing timeline / X post with #SeasonZero #PumpThePool3. Right: SolQuest Oracle signing ed25519 verification transaction.
+- Overlay Text: "STEP 2: CREATE & ENGAGE -> UP TO 2.5X BOOST"
+- Voiceover: "Next: Social Quests. We are rewarding the storytellers. Submit video breakdowns, technical walkthroughs, or spread the word across X and Discord. Our decentralized oracle parses video content hashes and awards dynamic multipliers—up to 2.5x on your entire reward tier! Every like, retweet, and video breakdown propels you up the Season Zero leaderboard."
+
+[01:30 - 02:00] SCENE 4: LIVE ON-CHAIN VERIFICATION DEMO
+- Visual: Terminal view running the SolQuest CLI verifying the quest on Solana Devnet/Mainnet, followed by an immediate Discord notification pop-up.
+- Overlay Text: "TRUSTLESS VERIFICATION. ZERO CENTRALIZATION."
+- Voiceover: "Notice the terminal: with one transaction, the oracle confirms our video hash and LP token holdings. Look at Discord—the webhook fires instantly with verified proof! Everything is non-custodial, open-source, and verifiable on Solana Explorer."
+
+[02:00 - 02:15] SCENE 5: CALL TO ACTION
+- Visual: Pulsing Season Zero portal URL, QR code, and sponsor handle.
+- Overlay Text: "JOIN SEASON ZERO NOW. PUMP THE POOL."
+- Voiceover: "Season Zero is live right now. Deposit into Pool 3, complete your social quests, publish your video, and claim your share of the genesis allocation. Don't wait. Pump the Pool!"

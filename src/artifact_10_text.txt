@@ -1,0 +1,5 @@
+Under the hood of the #PumpThePool3 engine:
+🔒 On-chain Ed25519 signature introspection stops replay hacks.
+📈 Up to 3.5x reward boosts for stakers providing real liquidity depth.
+🤖 Automated oracle pipeline verifies video duration, wallet tags, & engagement.
+⚡ Instant sub-second SPL reward claims directly on @Solana.

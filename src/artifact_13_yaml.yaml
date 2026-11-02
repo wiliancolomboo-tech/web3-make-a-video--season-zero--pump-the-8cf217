@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  season-zero-engine:
+    build: .
+    container_name: season-zero-quest-oracle
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}
+      - PROGRAM_ID=${PROGRAM_ID}
+      - ORACLE_SECRET_KEY=${ORACLE_SECRET_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+    volumes:
+      - render_cache:/tmp/season_zero_videos
+
+volumes:
+  render_cache:

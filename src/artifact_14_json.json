@@ -1,0 +1,28 @@
+{
+  "name": "season-zero-client",
+  "version": "1.0.0",
+  "description": "Production Orchestrator & Dynamic Video Render Pipeline for Season Zero",
+  "main": "dist/cli.js",
+  "bin": {
+    "season0": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/cli.ts",
+    "render-video": "ts-node src/video_renderer.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/spl-token": "^0.4.0",
+    "@solana/web3.js": "^1.89.0",
+    "axios": "^1.6.7",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

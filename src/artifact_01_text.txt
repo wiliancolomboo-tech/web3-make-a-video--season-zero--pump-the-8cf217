@@ -1,0 +1,9 @@
+sha256(canonical_json({
+  campaign_id,
+  quest_id,
+  wallet,
+  evidence_url,
+  provider,
+  provider_object_id,
+  observed_at
+}))

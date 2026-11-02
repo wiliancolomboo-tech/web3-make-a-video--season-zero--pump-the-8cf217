@@ -1,0 +1,10 @@
+Ready to claim your stake in Season Zero?
+
+1️⃣ Deposit into Pump the Pool 3 for instant 3x yield weighting
+2️⃣ Complete social challenges to build your on-chain streak
+3️⃣ Track real-time progress on our dashboard
+
+Deploy with 1-click Docker or test locally:
+🔗 https://github.com/solana-season-zero/core-quests
+
+cc @SuperteamDAO @Solana @solana_devs #Solana #DeFi #PumpThePool3

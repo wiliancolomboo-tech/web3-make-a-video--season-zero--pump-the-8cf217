@@ -1,199 +1,217 @@
-// programs/pump_the_pool_quests/src/lib.rs
 use anchor_lang::prelude::*;
-use anchor_lang::solana_program::{
-    ed25519_program::ID as ED25519_PROGRAM_ID,
-    instruction::Instruction,
-    sysvar::instructions::{load_current_index_checked, load_instruction_at_checked},
-};
+use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
+use anchor_lang::solana_program::ed25519_program;
+use anchor_lang::solana_program::instruction::Instruction;
 
-declare_id!("PUMP3zEroQuest1111111111111111111111111111111");
+declare_id!("ZeroPumP11111111111111111111111111111111111");
 
-pub const DISCRIMINATOR_LENGTH: usize = 8;
-pub const MAX_QUEST_BITS: u8 = 8;
+pub const CAMPAIGN_SEED: &[u8] = b"season_zero_config";
+pub const VAULT_SEED: &[u8] = b"reward_vault";
+pub const RECORD_SEED: &[u8] = b"user_quest_record";
 
 #[program]
-pub mod pump_the_pool_quests {
+pub mod season_zero_quests {
     use super::*;
 
-    /// Initialize a new Season Zero campaign instance for Pump the Pool 3
     pub fn initialize_campaign(
         ctx: Context<InitializeCampaign>,
         season_id: u32,
-        oracle_pubkey: [u8; 32],
-        min_lp_liquidity: u64,
-        season_end_timestamp: i64,
+        oracle_authority: Pubkey,
+        min_pool_3_lp_amount: u64,
+        reward_amount: u64,
     ) -> Result<()> {
-        let campaign = &mut ctx.accounts.campaign;
+        let campaign = &mut ctx.accounts.campaign_config;
         campaign.admin = ctx.accounts.admin.key();
         campaign.season_id = season_id;
-        campaign.oracle_pubkey = oracle_pubkey;
-        campaign.min_lp_liquidity = min_lp_liquidity;
-        campaign.season_end_timestamp = season_end_timestamp;
-        campaign.total_participants = 0;
-        campaign.total_xp_awarded = 0;
+        campaign.oracle_authority = oracle_authority;
+        campaign.pool_3_lp_mint = ctx.accounts.pool_3_lp_mint.key();
+        campaign.reward_mint = ctx.accounts.reward_mint.key();
+        campaign.min_pool_3_lp_amount = min_pool_3_lp_amount;
+        campaign.reward_amount = reward_amount;
+        campaign.total_distributed = 0;
         campaign.is_active = true;
-        campaign.bump = ctx.bumps.campaign;
+        campaign.bump = ctx.bumps.campaign_config;
+        campaign.vault_bump = ctx.bumps.reward_vault;
 
-        emit!(CampaignInitialized {
+        emit!(CampaignInitializedEvent {
             season_id,
-            admin: campaign.admin,
-            min_lp_liquidity,
-            season_end_timestamp,
+            oracle_authority,
+            min_pool_3_lp_amount,
+            reward_amount,
+            timestamp: Clock::get()?.unix_timestamp,
         });
 
         Ok(())
     }
 
-    /// Claim social quest tier and verify Pump the Pool 3 liquidity position
-    pub fn claim_quest_with_lp_proof(
-        ctx: Context<ClaimQuestWithLpProof>,
-        quest_bit_flag: u8,
-        lp_position_amount: u64,
-        xp_reward: u64,
-        signature: [u8; 64],
+    pub fn claim_season_zero_reward(
+        ctx: Context<ClaimReward>,
+        quest_bitmask: u8,
+        lp_amount_verified: u64,
+        oracle_signature: [u8; 64],
     ) -> Result<()> {
-        let clock = Clock::get()?;
-        let campaign = &mut ctx.accounts.campaign;
-        let user_record = &mut ctx.accounts.user_record;
-
-        require!(campaign.is_active, QuestError::CampaignInactive);
+        let campaign = &ctx.accounts.campaign_config;
+        require!(campaign.is_active, QuestError::CampaignPaused);
         require!(
-            clock.unix_timestamp < campaign.season_end_timestamp,
-            QuestError::SeasonEnded
-        );
-        require!(quest_bit_flag < MAX_QUEST_BITS, QuestError::InvalidQuestBit);
-        require!(
-            lp_position_amount >= campaign.min_lp_liquidity,
-            QuestError::InsufficientLpLiquidity
+            lp_amount_verified >= campaign.min_pool_3_lp_amount,
+            QuestError::InsufficientPool3Liquidity
         );
 
-        // Check if quest has already been completed by user
-        let mask = 1u8 << quest_bit_flag;
+        // Required Quests: Bit 0 = Video Created, Bit 1 = Pool 3 LP Added, Bit 2 = Social Follows
+        // Bitmask 0x07 (binary 00000111) requires all 3 quests completed
         require!(
-            (user_record.completed_quests_mask & mask) == 0,
-            QuestError::QuestAlreadyCompleted
+            (quest_bitmask & 0x07) == 0x07,
+            QuestError::MissingRequiredQuests
         );
 
-        // Cryptographically verify oracle signature via Sysvar Instructions introspection
-        verify_oracle_signature(
-            &ctx.accounts.sysvar_instructions,
-            &campaign.oracle_pubkey,
-            &ctx.accounts.user.key().to_bytes(),
-            quest_bit_flag,
-            lp_position_amount,
-            &signature,
+        // Verify that the user currently possesses at least lp_amount_verified in their LP account
+        require!(
+            ctx.accounts.user_lp_token_account.amount >= lp_amount_verified,
+            QuestError::InsufficientPool3Liquidity
+        );
+
+        let user_record = &mut ctx.accounts.user_quest_record;
+        require!(!user_record.has_claimed, QuestError::RewardAlreadyClaimed);
+
+        // Cryptographic Ed25519 Oracle Verification
+        let message = build_attestation_message(
+            &ctx.accounts.user.key(),
+            campaign.season_id,
+            quest_bitmask,
+            lp_amount_verified,
+        );
+
+        verify_ed25519_signature(
+            &ctx.accounts.instructions_sysvar,
+            &campaign.oracle_authority,
+            &message,
+            &oracle_signature,
         )?;
 
-        // Update state
-        if user_record.completed_quests_mask == 0 {
-            campaign.total_participants = campaign
-                .total_participants
-                .checked_add(1)
-                .ok_or(QuestError::MathOverflow)?;
-            user_record.user = ctx.accounts.user.key();
-            user_record.campaign = campaign.key();
-            user_record.bump = ctx.bumps.user_record;
-        }
+        // Execute Reward Transfer from PDA Vault to User Reward Account
+        let season_bytes = campaign.season_id.to_le_bytes();
+        let seeds = &[
+            VAULT_SEED,
+            season_bytes.as_ref(),
+            &[campaign.vault_bump],
+        ];
+        let signer_seeds = &[&seeds[..]];
 
-        user_record.completed_quests_mask |= mask;
-        user_record.lp_liquidity_verified = user_record
-            .lp_liquidity_verified
-            .checked_add(lp_position_amount)
-            .ok_or(QuestError::MathOverflow)?;
-        user_record.xp_balance = user_record
-            .xp_balance
-            .checked_add(xp_reward)
-            .ok_or(QuestError::MathOverflow)?;
-        user_record.last_updated = clock.unix_timestamp;
+        let transfer_cpi = Transfer {
+            from: ctx.accounts.reward_vault.to_account_info(),
+            to: ctx.accounts.user_reward_token_account.to_account_info(),
+            authority: ctx.accounts.reward_vault.to_account_info(),
+        };
 
-        campaign.total_xp_awarded = campaign
-            .total_xp_awarded
-            .checked_add(xp_reward)
+        let cpi_ctx = CpiContext::new_with_signer(
+            ctx.accounts.token_program.to_account_info(),
+            transfer_cpi,
+            signer_seeds,
+        );
+        token::transfer(cpi_ctx, campaign.reward_amount)?;
+
+        // Update User State
+        user_record.user = ctx.accounts.user.key();
+        user_record.season_id = campaign.season_id;
+        user_record.quest_bitmask = quest_bitmask;
+        user_record.claimed_at = Clock::get()?.unix_timestamp;
+        user_record.has_claimed = true;
+        user_record.reward_payout = campaign.reward_amount;
+        user_record.bump = ctx.bumps.user_quest_record;
+
+        let campaign_mut = &mut ctx.accounts.campaign_config;
+        campaign_mut.total_distributed = campaign_mut
+            .total_distributed
+            .checked_add(campaign.reward_amount)
             .ok_or(QuestError::MathOverflow)?;
 
         emit!(QuestCompletedEvent {
             user: ctx.accounts.user.key(),
             season_id: campaign.season_id,
-            quest_bit: quest_bit_flag,
-            lp_amount: lp_position_amount,
-            awarded_xp: xp_reward,
-            total_user_xp: user_record.xp_balance,
-            timestamp: clock.unix_timestamp,
+            quest_bitmask,
+            reward_payout: campaign.reward_amount,
+            timestamp: Clock::get()?.unix_timestamp,
         });
 
         Ok(())
     }
 
-    /// Admin state management to toggle active epoch status
-    pub fn set_campaign_state(ctx: Context<ManageCampaign>, is_active: bool) -> Result<()> {
-        let campaign = &mut ctx.accounts.campaign;
+    pub fn set_campaign_status(
+        ctx: Context<ManageCampaign>,
+        is_active: bool,
+    ) -> Result<()> {
+        let campaign = &mut ctx.accounts.campaign_config;
         campaign.is_active = is_active;
         Ok(())
     }
 }
 
-/// Introspects preceding Ed25519 instruction to verify Oracle authenticity
-fn verify_oracle_signature(
-    sysvar_instructions: &AccountInfo,
-    expected_oracle_pubkey: &[u8; 32],
-    user_bytes: &[u8; 32],
-    quest_bit: u8,
+/// Helper function to reconstruct the canonical attestation payload
+pub fn build_attestation_message(
+    user: &Pubkey,
+    season_id: u32,
+    quest_bitmask: u8,
     lp_amount: u64,
+) -> Vec<u8> {
+    let mut msg = Vec::with_capacity(32 + 4 + 1 + 8);
+    msg.extend_from_slice(user.as_ref());
+    msg.extend_from_slice(&season_id.to_le_bytes());
+    msg.push(quest_bitmask);
+    msg.extend_from_slice(&lp_amount.to_le_bytes());
+    msg
+}
+
+/// Validates Ed25519 Signature Precompile Instruction executed in the same transaction
+pub fn verify_ed25519_signature(
+    instructions_sysvar: &AccountInfo,
+    expected_signer: &Pubkey,
+    message: &[u8],
     signature: &[u8; 64],
 ) -> Result<()> {
-    let current_index = load_current_index_checked(sysvar_instructions)?;
-    require!(current_index > 0, QuestError::MissingEd25519Verification);
+    let current_index = anchor_lang::solana_program::sysvar::instructions::load_current_index_checked(instructions_sysvar)?;
+    require!(current_index > 0, QuestError::MissingPrecompileInstruction);
 
-    let prior_ix_index = (current_index - 1) as u16;
-    let ed25519_ix: Instruction =
-        load_instruction_at_checked(prior_ix_index as usize, sysvar_instructions)?;
+    // Load preceding instruction in the transaction
+    let precompile_ix: Instruction = anchor_lang::solana_program::sysvar::instructions::load_instruction_at_checked(
+        (current_index - 1) as usize,
+        instructions_sysvar,
+    )?;
 
     require!(
-        ed25519_ix.program_id == ED25519_PROGRAM_ID,
+        precompile_ix.program_id == ed25519_program::ID,
         QuestError::InvalidEd25519ProgramId
     );
 
-    // Build deterministic expected message: [user_pubkey (32) | quest_bit (1) | lp_amount_le (8)]
-    let mut expected_message = Vec::with_capacity(41);
-    expected_message.extend_from_slice(user_bytes);
-    expected_message.push(quest_bit);
-    expected_message.extend_from_slice(&lp_amount.to_le_bytes());
+    let data = precompile_ix.data;
+    require!(data.len() >= 16 + 64 + 32 + message.len(), QuestError::MalformedPrecompileData);
 
-    // Basic offset validation for standard Solana Ed25519 instruction data layout
-    // 0: num_signatures (u8 = 1)
-    // 1: padding (u8 = 0)
-    // 2..16: signature offsets (2 bytes each for sig_offset, sig_idx, pubkey_offset, pubkey_idx, msg_offset, msg_size, msg_idx)
-    let data = ed25519_ix.data;
-    require!(data.len() >= 16 + 64 + 32 + expected_message.len(), QuestError::InvalidSignatureLayout);
-
+    // Verify public key match
     let pubkey_offset = u16::from_le_bytes([data[6], data[7]]) as usize;
-    let sig_offset = u16::from_le_bytes([data[2], data[3]]) as usize;
-    let msg_offset = u16::from_le_bytes([data[10], data[11]]) as usize;
-    let msg_size = u16::from_le_bytes([data[12], data[13]]) as usize;
-
-    let extracted_pubkey = &data[pubkey_offset..pubkey_offset + 32];
-    let extracted_signature = &data[sig_offset..sig_offset + 64];
-    let extracted_message = &data[msg_offset..msg_offset + msg_size];
-
+    let pubkey_slice = &data[pubkey_offset..pubkey_offset + 32];
     require!(
-        extracted_pubkey == expected_oracle_pubkey,
+        pubkey_slice == expected_signer.as_ref(),
         QuestError::UnauthorizedOracleSigner
     );
+
+    // Verify signature match
+    let sig_offset = u16::from_le_bytes([data[2], data[3]]) as usize;
+    let sig_slice = &data[sig_offset..sig_offset + 64];
     require!(
-        extracted_signature == signature,
+        sig_slice == signature,
         QuestError::SignatureMismatch
     );
+
+    // Verify message payload match
+    let msg_offset = u16::from_le_bytes([data[10], data[11]]) as usize;
+    let msg_len = u16::from_le_bytes([data[12], data[13]]) as usize;
+    let msg_slice = &data[msg_offset..msg_offset + msg_len];
     require!(
-        extracted_message == expected_message.as_slice(),
-        QuestError::MessageIntegrityFailed
+        msg_slice == message,
+        QuestError::PayloadMismatch
     );
 
     Ok(())
 }
-
-// -----------------------------------------------------------------------------
-// ACCOUNTS & DATA STRUCTURES
-// -----------------------------------------------------------------------------
 
 #[derive(Accounts)]
 #[instruction(season_id: u32)]
@@ -201,34 +219,78 @@ pub struct InitializeCampaign<'info> {
     #[account(
         init,
         payer = admin,
-        space = DISCRIMINATOR_LENGTH + CampaignState::INIT_SPACE,
-        seeds = [b"campaign_season", season_id.to_le_bytes().as_ref()],
+        space = 8 + CampaignConfig::INIT_SPACE,
+        seeds = [CAMPAIGN_SEED, season_id.to_le_bytes().as_ref()],
         bump
     )]
-    pub campaign: Account<'info, CampaignState>,
+    pub campaign_config: Account<'info, CampaignConfig>,
+
+    pub pool_3_lp_mint: Account<'info, Mint>,
+    pub reward_mint: Account<'info, Mint>,
+
+    #[account(
+        init,
+        payer = admin,
+        seeds = [VAULT_SEED, season_id.to_le_bytes().as_ref()],
+        bump,
+        token::mint = reward_mint,
+        token::authority = reward_vault
+    )]
+    pub reward_vault: Account<'info, TokenAccount>,
+
     #[account(mut)]
     pub admin: Signer<'info>,
+    pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
+    pub rent: Sysvar<'info, Rent>,
 }
 
 #[derive(Accounts)]
-pub struct ClaimQuestWithLpProof<'info> {
-    #[account(mut)]
-    pub campaign: Account<'info, CampaignState>,
-    #[account(
-        init_if_needed,
-        payer = user,
-        space = DISCRIMINATOR_LENGTH + UserQuestRecord::INIT_SPACE,
-        seeds = [b"user_quest", user.key().as_ref(), campaign.key().as_ref()],
-        bump
-    )]
-    pub user_record: Account<'info, UserQuestRecord>,
+pub struct ClaimReward<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
-    /// CHECK: Inspected strictly using load_current_index_checked sysvar utility
-    #[account(address = anchor_lang::solana_program::sysvar::instructions::ID)]
-    pub sysvar_instructions: AccountInfo<'info>,
+
+    #[account(
+        mut,
+        seeds = [CAMPAIGN_SEED, campaign_config.season_id.to_le_bytes().as_ref()],
+        bump = campaign_config.bump
+    )]
+    pub campaign_config: Account<'info, CampaignConfig>,
+
+    #[account(
+        init,
+        payer = user,
+        space = 8 + UserQuestRecord::INIT_SPACE,
+        seeds = [RECORD_SEED, campaign_config.season_id.to_le_bytes().as_ref(), user.key().as_ref()],
+        bump
+    )]
+    pub user_quest_record: Account<'info, UserQuestRecord>,
+
+    #[account(
+        constraint = user_lp_token_account.mint == campaign_config.pool_3_lp_mint,
+        constraint = user_lp_token_account.owner == user.key()
+    )]
+    pub user_lp_token_account: Account<'info, TokenAccount>,
+
+    #[account(
+        mut,
+        constraint = user_reward_token_account.mint == campaign_config.reward_mint,
+        constraint = user_reward_token_account.owner == user.key()
+    )]
+    pub user_reward_token_account: Account<'info, TokenAccount>,
+
+    #[account(
+        mut,
+        seeds = [VAULT_SEED, campaign_config.season_id.to_le_bytes().as_ref()],
+        bump = campaign_config.vault_bump
+    )]
+    pub reward_vault: Account<'info, TokenAccount>,
+
+    pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
+    /// CHECK: Validated instruction introspection sysvar
+    #[account(address = anchor_lang::solana_program::sysvar::instructions::ID)]
+    pub instructions_sysvar: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
@@ -237,85 +299,80 @@ pub struct ManageCampaign<'info> {
         mut,
         has_one = admin @ QuestError::UnauthorizedAdmin
     )]
-    pub campaign: Account<'info, CampaignState>,
+    pub campaign_config: Account<'info, CampaignConfig>,
     pub admin: Signer<'info>,
 }
 
 #[account]
 #[derive(InitSpace)]
-pub struct CampaignState {
+pub struct CampaignConfig {
     pub admin: Pubkey,
     pub season_id: u32,
-    pub oracle_pubkey: [u8; 32],
-    pub min_lp_liquidity: u64,
-    pub season_end_timestamp: i64,
-    pub total_participants: u64,
-    pub total_xp_awarded: u64,
+    pub oracle_authority: Pubkey,
+    pub pool_3_lp_mint: Pubkey,
+    pub reward_mint: Pubkey,
+    pub min_pool_3_lp_amount: u64,
+    pub reward_amount: u64,
+    pub total_distributed: u64,
     pub is_active: bool,
     pub bump: u8,
+    pub vault_bump: u8,
 }
 
 #[account]
 #[derive(InitSpace)]
 pub struct UserQuestRecord {
     pub user: Pubkey,
-    pub campaign: Pubkey,
-    pub completed_quests_mask: u8,
-    pub lp_liquidity_verified: u64,
-    pub xp_balance: u64,
-    pub last_updated: i64,
+    pub season_id: u32,
+    pub quest_bitmask: u8,
+    pub claimed_at: i64,
+    pub reward_payout: u64,
+    pub has_claimed: bool,
     pub bump: u8,
 }
 
-// -----------------------------------------------------------------------------
-// EVENTS & ERRORS
-// -----------------------------------------------------------------------------
-
 #[event]
-pub struct CampaignInitialized {
+pub struct CampaignInitializedEvent {
     pub season_id: u32,
-    pub admin: Pubkey,
-    pub min_lp_liquidity: u64,
-    pub season_end_timestamp: i64,
+    pub oracle_authority: Pubkey,
+    pub min_pool_3_lp_amount: u64,
+    pub reward_amount: u64,
+    pub timestamp: i64,
 }
 
 #[event]
 pub struct QuestCompletedEvent {
     pub user: Pubkey,
     pub season_id: u32,
-    pub quest_bit: u8,
-    pub lp_amount: u64,
-    pub awarded_xp: u64,
-    pub total_user_xp: u64,
+    pub quest_bitmask: u8,
+    pub reward_payout: u64,
     pub timestamp: i64,
 }
 
 #[error_code]
 pub enum QuestError {
-    #[msg("Campaign is currently paused or inactive.")]
-    CampaignInactive,
-    #[msg("Season Zero timestamp has expired.")]
-    SeasonEnded,
-    #[msg("Invalid Quest bit provided. Must be within 0..7.")]
-    InvalidQuestBit,
-    #[msg("Provided Pump the Pool 3 LP liquidity is below minimum threshold.")]
-    InsufficientLpLiquidity,
-    #[msg("Quest has already been claimed for this user address.")]
-    QuestAlreadyCompleted,
-    #[msg("Missing Ed25519 instruction prior to execution.")]
-    MissingEd25519Verification,
-    #[msg("Invalid program ID for preceding instruction. Must be Ed25519.")]
-    InvalidEd25519ProgramId,
-    #[msg("Malformed Ed25519 signature payload header.")]
-    InvalidSignatureLayout,
-    #[msg("Ed25519 verification signer does not match authorized Oracle pubkey.")]
-    UnauthorizedOracleSigner,
-    #[msg("Provided Ed25519 signature fails verification.")]
-    SignatureMismatch,
-    #[msg("Signed Ed25519 message payload does not match invocation data.")]
-    MessageIntegrityFailed,
-    #[msg("Unauthorized admin.")]
-    UnauthorizedAdmin,
-    #[msg("Arithmetic overflow in calculation.")]
+    #[msg("Campaign is currently paused or inactive")]
+    CampaignPaused,
+    #[msg("Insufficient Pump the Pool 3 LP balance in user token account")]
+    InsufficientPool3Liquidity,
+    #[msg("Missing required quests: Video creation, Pool 3 LP, or Social Quest")]
+    MissingRequiredQuests,
+    #[msg("Reward already claimed for Season Zero")]
+    RewardAlreadyClaimed,
+    #[msg("Arithmetic overflow occurred")]
     MathOverflow,
+    #[msg("Preceding instruction is not the Ed25519 verify precompile")]
+    MissingPrecompileInstruction,
+    #[msg("Invalid program id for Ed25519 verification")]
+    InvalidEd25519ProgramId,
+    #[msg("Ed25519 instruction data is malformed")]
+    MalformedPrecompileData,
+    #[msg("Oracle signature was not produced by the authorized oracle key")]
+    UnauthorizedOracleSigner,
+    #[msg("Provided signature does not match attestation payload")]
+    SignatureMismatch,
+    #[msg("Instruction payload bytes do not match expected campaign state")]
+    PayloadMismatch,
+    #[msg("Unauthorized admin interaction")]
+    UnauthorizedAdmin,
 }

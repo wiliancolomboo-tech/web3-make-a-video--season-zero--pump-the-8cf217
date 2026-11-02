@@ -1,0 +1,1 @@
+rotate_verifier(new_verifier_pubkey)

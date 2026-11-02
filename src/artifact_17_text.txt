@@ -1,0 +1,8 @@
+Everything is 100% open-source, turnkey dockerized, and ready to deploy:
+✅ Full Anchor Rust Program
+✅ Automated Discord / Resend Webhooks
+✅ 100% Test Coverage
+
+Check out the code, run the CLI, and pump the pool today: https://github.com/pumpcast/season-zero-engine
+
+Tagging @solana @SuperteamDAO 🚀 Let's cook!

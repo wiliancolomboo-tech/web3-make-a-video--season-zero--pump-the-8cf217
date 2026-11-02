@@ -1,7 +1,9 @@
 {
   "status": "healthy",
-  "active_campaign": "Season Zero",
-  "rendered_videos_count": 1428,
-  "oracle_pubkey": "3m4Zf...7Y9",
-  "uptime_seconds": 86420
+  "programId": "PUMP3z4K7cZqL5hWJ8M8vR1v4T9rXkS2YnEaP5uM1po",
+  "season": 0,
+  "campaign": "Pump the Pool 3 & Social Quests",
+  "rpcLatencyMs": 42,
+  "totalProcessedVideos": 1420,
+  "queueDepth": 0
 }

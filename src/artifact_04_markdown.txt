@@ -1,0 +1,34 @@
+=============================================================================
+TITLE: Season Zero: Pump the Pool 3 & Social Quests Complete Walkthrough
+DURATION: 03:00 (1080p60 / 4K)
+TAGS: #Solana #DeFi #PumpThePool #SeasonZero #Web3Quests
+
+[00:00 - 00:30] SCENE 1: Hook & Season Zero Overview
+- Visual: Cinematic zoom on Solana ecosystem & Season Zero dynamic dashboard.
+- Audio (Voiceover): "Welcome to Season Zero! The premier gamified liquidity & 
+  creator acceleration program on Solana. Today, we're diving into the 
+  'Pump the Pool 3' initiative and showing you how to trigger a 2x multiplier 
+  with the Social Video Quest."
+
+[00:30 - 01:15] SCENE 2: Pump the Pool 3 (Liquidity Provisioning)
+- Visual: UI walkthrough depositing SOL/USDC into the designated pool.
+- Audio: "Step 1: Navigate to the target AMM pool. Deposit liquidity to mint 
+  your LP tokens. Our on-chain Anchor contract deterministically snapshots 
+  your balance to guarantee tamper-proof entry."
+
+[01:15 - 02:00] SCENE 3: Creating & Submitting the Social Video Quest
+- Visual: Terminal view running `season-cli submit-video` and uploading proof CID.
+- Audio: "Step 2: Share your explainer video on X or YouTube. Grab the CID 
+  hash and submit it via the Season Zero CLI. The daemon validates video integrity 
+  in seconds using SHA-256 digests."
+
+[02:00 - 02:45] SCENE 4: Verification, Multipliers & Notifications
+- Visual: Splitting screen showing on-chain event confirmation, Discord alert, 
+  and Resend email delivery.
+- Audio: "Once attested, your base reward points receive an instant 2x boost. 
+  Real-time notifications are sent straight to your email and community Discord."
+
+[02:45 - 03:00] SCENE 5: Call to Action & Conclusion
+- Visual: Final splash screen with GitHub link, docs, and campaign CTA.
+- Audio: "Pump the pool, post your proof, and dominate Season Zero. Let's build!"
+=============================================================================

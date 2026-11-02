@@ -1,0 +1,7 @@
+================================================================================
+VIDEO METADATA & SPECS:
+- Target Runtime: 02:45 (High Energy, Technical, Crisp Visuals)
+- Aspect Ratio: 16:9 (1080p / 4K 60fps) with companion 9:16 vertical cuts
+- Soundtrack: Cyberpunk Synthwave / High-Tempo Tech Lo-Fi
+- Visual Stack: Terminal recording (Asciinema/VHS) + UI walkthrough + Motion Infographics
+================================================================================

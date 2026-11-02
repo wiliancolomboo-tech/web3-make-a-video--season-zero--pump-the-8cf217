@@ -1,29 +1,26 @@
 version: '3.8'
 
 services:
-  season-zero-engine:
+  solana-quest-engine:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: season_zero_engine
-    restart: unless-stopped
+    container_name: solana_quest_vision_engine
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - PROGRAM_ID=QuestPooL11111111111111111111111111111111111
+      - CAMPAIGN_ID=3
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - PORT=8080
     ports:
       - "8080:8080"
-    environment:
-      - RPC_URL=https://api.mainnet-beta.solana.com
-      - ORACLE_PRIVATE_KEY=${ORACLE_PRIVATE_KEY}
-      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
-      - RESEND_API_KEY=${RESEND_API_KEY}
-      - LOG_LEVEL=info
-    healthcheck:
-      test: ["CMD-SHELL", "node -e 'require(\"http\").get(\"http://localhost:8080/health\", (r) => { if (r.statusCode !== 200) process.exit(1); })'"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
     volumes:
-      - video-renders:/tmp/season_zero_renders
-
-volumes:
-  video-renders:
-    driver: local
+      - ./rendered_assets:/usr/src/app/build/rendered_videos
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

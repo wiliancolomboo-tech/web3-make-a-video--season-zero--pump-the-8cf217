@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  quest-oracle-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pumpquest-oracle-engine
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}
+      - PROGRAM_ID=PumpQuest111111111111111111111111111111111111
+      - ORACLE_PRIVATE_KEY_JSON=${ORACLE_PRIVATE_KEY_JSON}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - TARGET_LP_MINT=${TARGET_LP_MINT}
+      - REWARD_MINT=${REWARD_MINT}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

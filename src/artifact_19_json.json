@@ -1,0 +1,9 @@
+{
+  "status": "healthy",
+  "oracle_pubkey": "Orac1eKey9zG2wL9vG2PqM9Vz5a4FkE1mR3",
+  "active_campaign": "Season Zero",
+  "pool_monitored": "Pump the Pool 3",
+  "total_videos_rendered": 1420,
+  "total_attestations_signed": 1388,
+  "uptime_seconds": 184520
+}

@@ -1,0 +1,29 @@
+FROM node:20-bullseye-slim
+
+# Install system dependencies including FFmpeg for video rendering
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    build-essential \
+    python3 \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy root and client package definitions
+COPY package*.json tsconfig*.json ./
+COPY client/package*.json ./client/
+
+WORKDIR /app/client
+RUN npm install
+
+WORKDIR /app
+COPY . .
+
+WORKDIR /app/client
+RUN npm run build
+
+EXPOSE 8080
+
+CMD ["node", "dist/cli.js", "generate-video"]

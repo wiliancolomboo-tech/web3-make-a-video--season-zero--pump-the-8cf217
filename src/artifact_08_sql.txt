@@ -1,0 +1,20 @@
+create table if not exists submissions (
+  id bigserial primary key,
+  idempotency_key text not null unique,
+  campaign text not null,
+  quest_id integer not null,
+  participant text not null,
+  external_id text not null,
+  nonce text,
+  tx_signature text,
+  status text not null check (
+    status in ('verified', 'attested', 'claimed', 'failed')
+  ),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists submissions_participant_idx
+  on submissions(participant);
+
+create index if not exists submissions_campaign_quest_idx
+  on submissions(campaign, quest_id);

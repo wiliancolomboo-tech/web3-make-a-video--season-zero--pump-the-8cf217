@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  quest-oracle-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: season-zero-oracle
+    restart: always
+    environment:
+      - PORT=8080
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=PUMP3sZzeroQuest111111111111111111111111111
+      - ORACLE_SECRET_KEY=${ORACLE_SECRET_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

@@ -1,0 +1,23 @@
+========================================================================================
+VIDEO QUEST STORYBOARD: "Mastering Season Zero & Pump the Pool 3 on Solana"
+========================================================================================
+[00:00 - 00:30] Hook & Intro:
+  • Visual: High-res UI capture of the protocol's Season Zero Dashboard & Solana Explorer.
+  • Voiceover: "Solana DeFi is accelerating. Today, we're diving into Season Zero and 
+    unpacking how 'Pump the Pool 3' allows you to supercharge your yield with a 2x 
+    multiplier across all social quests."
+
+[00:30 - 01:30] Deep-Dive Technical Mechanics:
+  • Visual: Flowchart showing concentrated liquidity injection into 'Pump the Pool 3'.
+  • Voiceover: "Step 1: Deposit liquidity into the designated Pump the Pool 3 vault. 
+    Step 2: Note your position receipt PDA. This triggers on-chain boost eligibility."
+
+[01:30 - 02:30] Social Quests & Cryptographic Attestation:
+  • Visual: The SolQuest verification engine validating video hashtags and hashes.
+  • Voiceover: "Every video guide is verified by our Ed25519 Oracle and written directly
+    to Solana's ledger. No sybils, no spreadsheets—pure on-chain XP."
+
+[02:30 - 03:00] Call to Action:
+  • Visual: Leaderboard climb and community links.
+  • Voiceover: "Submit your video, join Pump the Pool 3, and conquer Season Zero now!"
+========================================================================================

@@ -1,0 +1,25 @@
+🧵 1/3
+🚨 SEASON ZERO IS OFFICIALLY LIVE! 🚨
+
+We just launched "Pump the Pool 3" + the Automated Social Quest Engine on @solana.
+
+Deepen LP liquidity, create your UGC breakdown videos, and claim instant, verified rewards on-chain.
+
+Here's how to participate & earn: 👇
+
+🧵 2/3
+🌊 Why "Pump the Pool 3"?
+We're locking real on-chain depth. Our Solana Anchor program pairs off-chain video verification with your LP stake snapshot.
+
+✅ Create your video breakdown
+✅ Tag #PumpThePool3 & #SeasonZero
+✅ Deposit LP in the pool
+✅ Automated Oracle instant payout + 1,000 XP!
+
+🧵 3/3
+No 5-day review delays. Zero manual spreadsheets. Pure Solana speed with cryptographic proof.
+
+Check out the full open-source repo, Anchor contract, and dynamic video synthesis engine:
+🔗 https://github.com/sponsor-org/season-zero-pump-the-pool-3
+
+Let's pump the pool! 🚀⚡ @solana #SolanaDevs #DeFi

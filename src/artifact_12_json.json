@@ -1,0 +1,8 @@
+{
+  "status": "healthy",
+  "service": "pumpstream-zero",
+  "programId": "PumpZero11111111111111111111111111111111111",
+  "oracleAuthority": "6wZb...gXp",
+  "uptime": 86420,
+  "queueDepth": 0
+}

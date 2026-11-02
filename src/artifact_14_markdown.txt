@@ -1,0 +1,14 @@
+🧵 1/3: Season Zero is LIVE on @Solana, and we just supercharged "Pump the Pool 3 & Social Quests" with autonomous on-chain proofs + programmatic dynamic video generation! ⚡️
+
+No more manual screenshot forms. Pump Pool 3, create content, and get verified in < 800ms. 🎬🌊
+
+🧵 2/3: Under the hood:
+🔹 Solana Anchor smart contract checks LP depth & signature attestations
+🔹 Zero-dependency Node/FFmpeg engine renders personalized 1080p 60fps video recaps of your wallet stats
+🔹 Instant Discord, Slack & @resend receipts with verified cryptographic proofs
+
+🧵 3/3: Open-source, turnkey Docker deployment, and ready for production scale. 
+
+Check out the full architecture & contract code here: github.com/sponsor-org/season-zero-pump-pool3 
+
+Let's Pump the Pool 3! 🚀🪐 #Solana #DeFi #Web3Bounties

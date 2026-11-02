@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: season-zero-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass "SecureSeasonZeroRedis123"
+
+  oracle-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: season-zero-oracle
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - ORACLE_PRIVATE_KEY_B58=[1,2,3...your_keypair_bytes]
+      - REDIS_URL=redis://:SecureSeasonZeroRedis123@redis:6379
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  redis_data:

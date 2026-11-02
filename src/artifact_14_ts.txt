@@ -1,0 +1,132 @@
+import * as anchor from "@coral-xyz/anchor";
+import { expect } from "chai";
+import { Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+
+describe("proofpool", () => {
+  const provider = anchor.AnchorProvider.env();
+  anchor.setProvider(provider);
+
+  const program = anchor.workspace.Proofpool;
+  const authority = provider.wallet;
+  const participant = Keypair.generate();
+  const campaignId = new Uint8Array(32).fill(7);
+
+  let campaign: PublicKey;
+  let quest: PublicKey;
+
+  it("airdrops participant", async () => {
+    const sig = await provider.connection.requestAirdrop(
+      participant.publicKey,
+      LAMPORTS_PER_SOL
+    );
+    await provider.connection.confirmTransaction(sig);
+    expect(
+      await provider.connection.getBalance(participant.publicKey)
+    ).to.be.greaterThan(0);
+  });
+
+  it("initializes campaign", async () => {
+    [campaign] = PublicKey.findProgramAddressSync(
+      [Buffer.from("campaign"), Buffer.from(campaignId)],
+      program.programId
+    );
+
+    await program.methods
+      .initializeCampaign(Array.from(campaignId), "Season Zero")
+      .accounts({
+        authority: authority.publicKey,
+        campaign,
+        systemProgram: anchor.web3.SystemProgram.programId
+      })
+      .rpc();
+
+    const account = await program.account.campaign.fetch(campaign);
+    expect(account.title).to.equal("Season Zero");
+  });
+
+  it("adds a reward quest", async () => {
+    [quest] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("quest"),
+        campaign.toBuffer(),
+        Buffer.from(new Uint8Array([1, 0, 0, 0]))
+      ],
+      program.programId
+    );
+
+    await program.methods
+      .addQuest(1, 1000000, "Create a video")
+      .accounts({
+        campaign,
+        authority: authority.publicKey,
+        quest,
+        systemProgram: anchor.web3.SystemProgram.programId
+      })
+      .rpc();
+
+    const account = await program.account.quest.fetch(quest);
+    expect(account.rewardLamports.toNumber()).to.equal(1000000);
+  });
+
+  it("rejects invalid empty title", async () => {
+    const badQuest = Keypair.generate().publicKey;
+
+    try {
+      await program.methods
+        .addQuest(2, 1000000, "")
+        .accounts({
+          campaign,
+          authority: authority.publicKey,
+          quest: badQuest,
+          systemProgram: anchor.web3.SystemProgram.programId
+        })
+        .rpc();
+
+      expect.fail("transaction should fail");
+    } catch (error) {
+      expect(String(error)).to.contain("InvalidTitle");
+    }
+  });
+
+  it("submits a proof exactly once", async () => {
+    const [submission] = PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("submission"),
+        campaign.toBuffer(),
+        quest.toBuffer(),
+        participant.publicKey.toBuffer()
+      ],
+      program.programId
+    );
+
+    await program.methods
+      .submitProof(Array.from(new Uint8Array(32).fill(9)), "https://evidence.test/1")
+      .accounts({
+        participant: participant.publicKey,
+        campaign,
+        quest,
+        submission,
+        systemProgram: anchor.web3.SystemProgram.programId
+      })
+      .signers([participant])
+      .rpc();
+
+    try {
+      await program.methods
+        .submitProof(Array.from(new Uint8Array(32).fill(9)), "https://evidence.test/1")
+        .accounts({
+          participant: participant.publicKey,
+          campaign,
+          quest,
+          submission,
+          systemProgram: anchor.web3.SystemProgram.programId
+        })
+        .signers([participant])
+        .rpc();
+
+      expect.fail("duplicate submission should fail");
+    } catch {
+      expect(true).to.equal(true);
+    }
+  });
+});

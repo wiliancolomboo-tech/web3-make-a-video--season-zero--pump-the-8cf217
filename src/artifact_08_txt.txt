@@ -1,0 +1,19 @@
+[00:00 - 00:15] INTRO: THE LIQUIDITY DILEMMA
+Visual: Rapid glitch transitions between deserted DEX order books and skyrocketing APY charts. Solana purple and emerald neon lighting.
+Voiceover (Deep, energetic): "Web3 campaigns promised rewards, but delivered sybil noise. Until today. Welcome to Season Zero."
+On-Screen Graphic: 3D Solana monolith cracking open into "SEASON ZERO: THE GENESIS AWAKENING".
+
+[00:15 - 00:45] MODULE 1: PUMP THE POOL 3
+Visual: 3D liquidity cubes flying into an Anchor-secured vault PDA. Real-time counter showing "3X MULTIPLIER ACTIVE".
+Voiceover: "Pump the Pool 3 redefines liquidity provisioning. Zero lockup anxiety, deterministic on-chain XP, and instant yield multipliers directly credited to your Season Zero PDA."
+On-Screen Graphic: Interactive slippage comparison graph; Pump the Pool 3 highlighted at 0.01% depth.
+
+[00:45 - 01:15] MODULE 2: SOCIAL & VIDEO QUESTS
+Visual: UI walkthrough of the video checkpoint verifier. Cryptographic hash nonces streaming into an Ed25519 oracle signature.
+Voiceover: "Watch, share, and climb. Proof-of-Watch technology verifies every frame on-chain. Complete social quests across X and Discord to supercharge your airdrop allocation."
+On-Screen Graphic: Completed Quest Badge glowing with transaction hash link to SolanaFM.
+
+[01:15 - 01:30] OUTRO: CALL TO ACTION
+Visual: Big call to action button with Phantom/Solflare wallet connect prompt and countdown clock to Epoch close.
+Voiceover: "Season Zero is live. Pump the Pool 3. Lock your claim. Dominate the leaderboard."
+On-Screen Text: "LAUNCH APP • APP.PUMPQUEST.SOL • SEASON ZERO ACTIVE"

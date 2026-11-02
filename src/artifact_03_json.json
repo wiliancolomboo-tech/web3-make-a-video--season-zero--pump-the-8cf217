@@ -1,0 +1,29 @@
+{
+  "name": "season-zero-orchestrator",
+  "version": "1.0.0",
+  "description": "Production Orchestrator & Attestation Agent for Season Zero, Pump the Pool 3 & Video Quests",
+  "main": "dist/orchestrator.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/orchestrator.js",
+    "test": "mocha -r ts-node/register 'tests/**/*.ts' --timeout 60000"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/web3.js": "^1.91.4",
+    "@solana/spl-token": "^0.4.3",
+    "axios": "^1.6.8",
+    "commander": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "resend": "^3.2.0",
+    "bs58": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@types/mocha": "^10.0.6",
+    "@types/chai": "^4.3.11",
+    "chai": "^4.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

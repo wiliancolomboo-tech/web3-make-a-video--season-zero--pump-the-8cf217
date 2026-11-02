@@ -1,0 +1,26 @@
+🧵 1/3
+Thrilled to unveil our submission for Season Zero: "Pump the Pool 3 & Social Quests"! 🌊⚡
+
+We built the V-PUMP Engine: dynamic programmatic video generation combined with an on-chain @solana Anchor verification protocol for content quests & LP growth.
+
+Here’s how we solved Sybil quests forever 🧵👇
+
+---
+
+🧵 2/3
+Traditional bounties suffer from bot-farmed retweets and zero real liquidity. 
+V-PUMP fixes this:
+1️⃣ Headless 60fps automated video explainers rendered in <30s
+2️⃣ Off-chain video hashing anchored via Ed25519 oracles
+3️⃣ Atomic on-chain LP verification for "Pump the Pool 3" before unlocking Season 0 rewards! 🔒💰
+
+---
+
+🧵 3/3
+Complete with:
+✅ Rust Anchor Smart Contract
+✅ Real-time multi-channel webhooks (@resend + Discord)
+✅ 100% Passing test suite & 1-click Docker deploy
+
+Repo & live deployment live now! Let's pump the pool! 🚀
+cc @SuperteamDAO @solana #Solana #DeFi #PumpThePool

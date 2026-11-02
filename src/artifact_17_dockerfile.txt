@@ -1,0 +1,39 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /usr/src/app
+
+# Install system dependencies for canvas and video encoding
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    cairo-dev \
+    pango-dev \
+    jpeg-dev \
+    giflib-dev \
+    librsvg-dev \
+    ffmpeg
+
+COPY package*.json ./
+COPY tsconfig.json ./
+RUN npm ci
+
+COPY cli/ ./cli/
+COPY target/idl/ ./target/idl/
+
+RUN npm run build
+
+# Production Runner
+FROM node:20-alpine AS runner
+WORKDIR /usr/src/app
+
+RUN apk add --no-cache ffmpeg cairo pango jpeg giflib librsvg
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/target/idl ./target/idl
+
+USER node
+EXPOSE 8080
+
+CMD ["node", "dist/cli/src/daemon.js"]

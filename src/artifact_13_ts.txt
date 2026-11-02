@@ -1,0 +1,53 @@
+import { Command } from "commander";
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  clusterApiUrl,
+} from "@solana/web3.js";
+import fs from "node:fs";
+
+const cli = new Command();
+
+cli
+  .name("pumppool")
+  .description("PumpPool campaign administration CLI")
+  .option("--rpc <url>", "Solana RPC URL", process.env.SOLANA_RPC_URL ?? clusterApiUrl("devnet"))
+  .option("--keypair <path>", "Authority keypair", process.env.AUTHORITY_KEYPAIR);
+
+cli
+  .command("health")
+  .action(async () => {
+    const options = cli.opts();
+    const connection = new Connection(options.rpc, "confirmed");
+    const slot = await connection.getSlot();
+    console.log(JSON.stringify({ rpc: options.rpc, slot }, null, 2));
+  });
+
+cli
+  .command("balance")
+  .action(async () => {
+    const options = cli.opts();
+
+    if (!options.keypair) {
+      throw new Error("--keypair is required");
+    }
+
+    const secret = Uint8Array.from(
+      JSON.parse(fs.readFileSync(options.keypair, "utf8")),
+    );
+
+    const signer = Keypair.fromSecretKey(secret);
+    const connection = new Connection(options.rpc, "confirmed");
+    const balance = await connection.getBalance(signer.publicKey);
+
+    console.log({
+      address: signer.publicKey.toBase58(),
+      sol: balance / 1_000_000_000,
+    });
+  });
+
+cli.parseAsync().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

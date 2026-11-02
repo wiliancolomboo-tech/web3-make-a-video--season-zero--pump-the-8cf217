@@ -1,0 +1,7 @@
+PORT=8080
+SOLANA_RPC_URL=https://api.devnet.solana.com
+ORACLE_SECRET_KEY_BASE64=YmFzZTY0X29yYWNsZV9zZWNyZXRfa2V5X2V4YW1wbGVfaGVyZQ==
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+OUTPUT_DIR=/app/rendered
+NODE_ENV=production

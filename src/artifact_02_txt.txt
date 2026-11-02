@@ -1,0 +1,20 @@
++-----------------------------------------------------------------------------------+
+|                            AEROQUEST HIGH-AVAILABILITY TOPOLOGY                    |
++-----------------------------------------------------------------------------------+
+|  [Creators & LPs]                                                                 |
+|         │                                                                         |
+|         ▼ (HTTPS / TLS 1.3)                                                       |
+|  [Cloudflare Edge / DDOS Shield]                                                  |
+|         │                                                                         |
+|         ▼ (Reverse Proxy)                                                         |
+|  [FastAPI / Node.js Engine Cluster] <──> [Redis Nonce & Deduplication Cache]     |
+|         │                        │                                                |
+|         ├─► [Social Media APIs]   ├─► [Enterprise Solana RPC Nodes (Helius/Triton)]  |
+|         │   (YouTube, X, TikTok) │    (GetParsedProgramAccounts / Pool Verification)|
+|         │                        │                                                |
+|         ▼                        ▼                                                |
+|  [Ed25519 Oracle Key HSM] ───► [Solana Anchor Program: AeroQuest Season Zero]     |
+|                                  ├── Campaign PDA Escrow                          |
+|                                  ├── User Claim Receipt PDA                       |
+|                                  └── Target PtP 3 DLMM Pool LP Verification       |
++-----------------------------------------------------------------------------------+

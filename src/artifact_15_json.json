@@ -1,0 +1,17 @@
+{
+  "status": "healthy",
+  "uptimeSeconds": 14238,
+  "solanaRpc": {
+    "endpoint": "https://api.mainnet-beta.solana.com",
+    "blockHeight": 284192001,
+    "latencyMs": 42
+  },
+  "renderQueue": {
+    "activeJobs": 0,
+    "completedJobs": 1289,
+    "failedJobs": 0
+  },
+  "storage": {
+    "outputVolumeFreeMb": 42810
+  }
+}

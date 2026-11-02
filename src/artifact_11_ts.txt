@@ -1,0 +1,38 @@
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  Transaction,
+  TransactionInstruction
+} from "@solana/web3.js";
+
+export const connection = new Connection(
+  process.env.SOLANA_RPC_URL ?? "https://api.devnet.solana.com",
+  "confirmed"
+);
+
+export function loadAuthority(): Keypair {
+  const raw = process.env.AUTHORITY_SECRET_KEY;
+  if (!raw) throw new Error("AUTHORITY_SECRET_KEY is not configured");
+
+  const bytes = Uint8Array.from(JSON.parse(raw));
+  if (bytes.length !== 64) throw new Error("Authority secret key must contain 64 bytes");
+
+  return Keypair.fromSecretKey(bytes);
+}
+
+export async function health(): Promise<object> {
+  const slot = await connection.getSlot("confirmed");
+  return {
+    ok: true,
+    rpc: connection.rpcEndpoint,
+    slot
+  };
+}
+
+export function campaignPda(programId: PublicKey, id: Uint8Array): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("campaign"), Buffer.from(id)],
+    programId
+  )[0];
+}

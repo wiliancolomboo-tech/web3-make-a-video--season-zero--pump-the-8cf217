@@ -1,0 +1,12 @@
+GET /health
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "healthy",
+  "programId": "PUMP3zEwM8xL8wF8yFfDkWbN9mQv5uXkP1rT3nSeas0n",
+  "campaign": "Season Zero: Pump the Pool 3",
+  "oracleStatus": "online",
+  "processedVideos": 420,
+  "uptimeSeconds": 86400
+}

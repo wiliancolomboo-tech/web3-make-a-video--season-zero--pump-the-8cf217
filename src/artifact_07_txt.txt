@@ -1,0 +1,45 @@
+========================================================================================
+VIDEO TIMELINE SCRIPT: "SEASON ZERO: PUMP THE POOL 3 & SOCIAL QUESTS"
+Duration: 90 Seconds | Audio: High-Energy Tech Cyberpunk OST | Resolution: 4K 60FPS
+========================================================================================
+
+[00:00 - 00:15] SECTION 1: THE HOOK & INTRO
+- Visual: Cinematic zoom into the Solana 3D Logo bursting into glowing emerald particles. 
+  Text on screen: "SEASON ZERO IS HERE. WELCOME TO PUMP THE POOL 3."
+- Voiceover (Punchy, energetic): 
+  "Solana DeFi is leveling up. Welcome to Season Zero — the premier liquidity acceleration 
+   and community quest campaign. Introducing: Pump the Pool 3."
+
+[00:15 - 00:35] SECTION 2: PUMP THE POOL 3 (LIQUIDITY INJECTION)
+- Visual: Screen capture of live UI showing Raydium/Orca LP token deposit modal. 
+  User selects lock duration: "4 Epochs". Reward multiplier counter ticks up: "1.5x Multiplier Active". 
+  Confirms transaction on Phantom wallet; instant Solana confirmation popup (<400ms).
+- Voiceover: 
+  "Pump the Pool 3 redefines liquidity dynamics. Deposit your LP tokens into our audited 
+   vault, lock for up to 52 epochs, and earn time-weighted bonus multipliers. No mercenary 
+   capital, no instant dumps — just pure compound yield and verifiable Season Zero points."
+
+[00:35 - 00:55] SECTION 3: SYBIL-PROOF SOCIAL QUESTS
+- Visual: User scrolls to the "Social Quests" tab. 
+  Clicks 'Verify X Follow & Retweet'. Discord OAuth check lights up green. 
+  A high-tech terminal overlay highlights the Ed25519 Oracle Signature validating the 
+  cryptographic attestation on-chain. Points balance increments: +250 XP.
+- Voiceover: 
+  "Fuel your ascent up the leaderboard with Social Quests. Connect Twitter and Discord 
+   to verify social loyalty. Powered by off-chain Ed25519 oracle attestations, every quest 
+   is Sybil-resistant, cryptographically proven, and minted directly to your wallet."
+
+[00:55 - 01:15] SECTION 4: ENTERPRISE TELEMETRY & ALERTS
+- Visual: Split screen: Discord channel receives instant automated embed notification 
+  of LP lock and quest claim, alongside instant Resend email receipt arriving on a mobile device.
+- Voiceover: 
+  "Enterprise-grade reliability out of the box: instant Discord webhooks, Resend transaction 
+   receipts, and sub-second deterministic settlement on Solana Mainnet."
+
+[01:15 - 01:30] SECTION 5: CALL TO ACTION & OUTRO
+- Visual: The Season Zero Leaderboard shines, displaying Top Liquidity Champions. 
+  URL and QR code appear prominently: "pump.solana.io/season-zero".
+- Voiceover: 
+  "Season Zero is live. Lock your LP, dominate the quests, and Pump the Pool. 
+   Start pumping today."
+========================================================================================

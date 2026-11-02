@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  oracle-worker:
+    build: .
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=SznZeroPumpPooL3111111111111111111111111111
+      - ORACLE_PRIVATE_KEY=[1,2,3,...]
+      - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3

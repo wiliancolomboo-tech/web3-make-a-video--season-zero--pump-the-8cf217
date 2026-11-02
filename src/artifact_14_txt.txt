@@ -1,0 +1,11 @@
+3/ Zero manual review. Zero Sybil leaks. Instant automated SPL rewards.
+
+✅ Complete Anchor Program
+✅ TypeScript Automation CLI & Verifier Worker
+✅ 100% Passing Test Suite
+✅ Turnkey Docker setup
+
+Check out the full repository & live devnet demo 👇
+github.com/solana-bounties/season-zero-pump-the-pool-3
+
+#Solana #DeFi #PumpThePool #Web3Quests #SeasonZero

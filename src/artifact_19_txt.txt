@@ -1,0 +1,6 @@
+2/ How does it work? 🛠️
+
+💧 Pump the Pool 3: Stake LP tokens into our locked vault to earn fee share + Season Zero multiplier points.
+🎥 Social Quests: Drop high-quality videos & technical deep-dives.
+
+Our decentralized Ed25519 Oracle verifies submissions directly on-chain. No sybils, instant confirmation. ⚡

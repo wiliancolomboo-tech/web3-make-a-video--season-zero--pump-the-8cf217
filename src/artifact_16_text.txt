@@ -1,0 +1,7 @@
+How does it work under the hood?
+
+1️⃣ Programmatic Video Pipeline: Custom 60fps Canvas/FFmpeg generator computes deterministic SHA-256 content hashes.
+2️⃣ Ed25519 Oracle Proofs: Quests are attested cryptographically via native Solana sysvars.
+3️⃣ 2X LP Boost: Active "Pump the Pool 3" liquidity providers automatically unlock 2X reward multipliers!
+
+Zero manual reviews. Zero Sybils. ⚡

@@ -1,0 +1,4 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+ORACLE_PRIVATE_KEY_HEX=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef8899aabbccddeeff00112233445566778899aabbccddeeff0011223344556677
+OPERATIONAL_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+PORT=8080

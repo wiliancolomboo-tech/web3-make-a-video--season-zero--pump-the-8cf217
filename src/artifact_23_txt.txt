@@ -1,0 +1,7 @@
+🚨 Cold-start liquidity is broken. Isolated social quests are full of bots.
+
+Introducing Season Zero: Pump the Pool 3 & Social Quests on @solana ⚡️
+
+We built an end-to-end Anchor protocol merging time-decay LP boost curves with on-chain cryptographic Merkle quest proofs.
+
+Here is how it works 🧵👇

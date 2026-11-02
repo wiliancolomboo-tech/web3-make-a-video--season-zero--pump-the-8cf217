@@ -1,0 +1,6 @@
+Turnkey, Sybil-resistant, and verified in real-time with automated @resend receipts & Discord/Slack alerts.
+
+Check out the 100% open-source engine, anchor contracts, and Docker runner ready for @Superteam / Solana deployment:
+🔗 github.com/sponsor-org/season-zero-engine
+
+Let's pump the pool! 🌊💧 #Solana #DeFi #SeasonZero

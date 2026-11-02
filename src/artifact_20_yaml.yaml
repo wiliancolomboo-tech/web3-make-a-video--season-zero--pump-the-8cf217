@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  season-zero-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: season_zero_engine_oracle
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - SEASON_ID=0
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

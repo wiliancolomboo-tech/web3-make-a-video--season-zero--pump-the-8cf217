@@ -1,0 +1,16 @@
+### VIDEO TIMECODES & AUDIO-VISUAL DIRECTIVES
+- [00:00 - 00:35] Scene 1: High-Energy Hook & Season Zero Alpha
+  * Visual: High-framerate screen recording of the Solana dApp interface, zooming into the Season Zero dashboard and total rewards leaderboard.
+  * Voiceover: "Welcome to Season Zero! If you've been searching for the highest verified yield and incentive loops on Solana, this campaign is your ticket. Today, we're diving into Season Zero, breaking down the mechanics of 'Pump the Pool 3', and showing you how to complete every single Social Quest to earn maximum rewards."
+
+- [00:35 - 01:45] Scene 2: Deep Dive into "Pump the Pool 3"
+  * Visual: Liquidity pool UI (Concentrated/DLMM liquidity curve). Cursor adds SOL/USDC liquidity into the active fee tier.
+  * Voiceover: "Pump the Pool 3 isn't just standard staking—it's concentrated liquidity engineered to capture market volatility while racking up dynamic point multipliers. By depositing into the Pump the Pool 3 pairs, you immediately trigger an on-chain 1.5x multiplier on your Season Zero quest points. Here's exactly how to deposit and extract your position receipt..."
+
+- [01:45 - 02:45] Scene 3: Mastering Social Quests & Video Submissions
+  * Visual: Step-by-step walkthrough submitting a video review, connecting X (Twitter) credentials, and verifying engagement.
+  * Voiceover: "Social Quests bridge your authentic community engagement directly onto Solana. Every video tutorial you publish, tweet you author, and quest you complete gets cryptographically attested via our Ed25519 oracle engine. No bot farming, no manual waitlists—just instant, verifiable reward distribution."
+
+- [02:45 - 03:30] Scene 4: Conclusion & Direct Call-to-Action
+  * Visual: Showing the confirmed transaction on Solana Explorer and points reflected live in the user dashboard.
+  * Voiceover: "Season Zero is live for a limited window. Follow the links below, pump the pool, submit your social quests, and secure your place on the leaderboard. Let's build on Solana!"

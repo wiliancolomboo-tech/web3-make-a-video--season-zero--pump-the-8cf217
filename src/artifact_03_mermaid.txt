@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> Unregistered
+    Unregistered --> Enrolled : register_participant()
+    Enrolled --> Pool3Active : deposit_pool3_liquidity()
+    Pool3Active --> MilestoneReached : LP Threshold Met ($1K, $5K, $25K)
+    MilestoneReached --> SocialVoucherIssued : Oracle Signs Quest Action
+    SocialVoucherIssued --> TierElevated : claim_social_quest() [Verifies Sig]
+    TierElevated --> VideoRenderQueued : Emit QuestCompletedEvent
+    VideoRenderQueued --> VideoDispatched : Remotion Renders & Emits to CDN
+    VideoDispatched --> [*] : Rewards Distributed in Season Zero Epoch

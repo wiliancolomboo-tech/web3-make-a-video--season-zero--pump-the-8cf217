@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  quest-oracle-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: season-zero-quest-worker
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - ORACLE_PRIVATE_KEY=${ORACLE_PRIVATE_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

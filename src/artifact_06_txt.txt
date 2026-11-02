@@ -1,0 +1,35 @@
+========================================================================================
+VIDEO TITLE: Season Zero & Pump the Pool 3: The Complete Solana Quest Guide
+TARGET DURATION: 90 Seconds | ASPECT RATIO: 16:9 & 9:16 (Cross-posted)
+========================================================================================
+
+[00:00 - 00:15] SCENE 1: THE HOOK
+Visual: Fast-paced Solana neon motion graphics. Red line displaying stagnant DEX yields,
+transitioning violently to a glowing 2.5x multiplier vault badge labeled "PUMP THE POOL 3".
+Voiceover (Energetic): "Solana DeFi is leveling up, and Season Zero is officially live!
+If you've been sitting on the sidelines, you're leaving the biggest liquidity multipliers
+and rewards on the table. Welcome to 'Pump the Pool 3'!"
+
+[00:15 - 00:40] SCENE 2: PUMP THE POOL 3 MECHANICS
+Visual: Screen recording zooming into the liquidity staking UI. Showing SOL/USDC LP token
+deposit into Pool 3, highlighting the instant 2.5x points boost on the verified user profile.
+Voiceover (Instructive): "Step 1: Head over to Pool 3. By providing liquidity to the anchor
+pool, you unlock an immediate 2.5x Season Zero Point boost. Your LP tokens remain 100%
+yours while automatically accumulating on-chain status verified directly through our
+Anchor smart contract."
+
+[00:40 - 01:05] SCENE 3: SOCIAL QUESTS & ON-CHAIN VERIFICATION
+Visual: Terminal animation showing off-chain video & tweet validation. Ed25519 cryptographic
+signatures verifying quest receipts instantly with sub-second finality.
+Voiceover (Clear & Crisp): "Step 2: Social Quests. Create educational content, post your breakdown
+on X or YouTube, and submit your proof. No more waiting 3 days for human mods. Our autonomous
+oracle validates your video metadata, signs an Ed25519 proof, and mints your Season Zero badges
+straight to your Solana wallet in under 2 seconds!"
+
+[01:05 - 01:30] SCENE 4: CALL TO ACTION & SEASON ZERO TIMELINE
+Visual: Glowing countdown timer to Season Zero snapshot. Callout to join the Discord, stake
+in Pool 3, and complete Quest #3 today.
+Voiceover (Urgent CTA): "Season Zero ends at the final snapshot. Stake in Pool 3, complete your
+quests, and secure your place at the top of the leaderboard. Hit the link below to pump the pool
+and claim your Season Zero badge right now!"
+========================================================================================

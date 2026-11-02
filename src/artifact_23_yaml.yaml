@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  video-quest-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: season_zero_video_quest_engine
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Pump3SeasonZero11111111111111111111111111111
+      - SEASON_ID=0
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - ORACLE_SECRET_KEY=${ORACLE_SECRET_KEY}
+    volumes:
+      - ./renders:/app/client/renders
+    restart: unless-stopped

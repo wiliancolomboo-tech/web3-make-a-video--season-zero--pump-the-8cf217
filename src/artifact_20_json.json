@@ -1,0 +1,8 @@
+{
+  "status": "healthy",
+  "season": 0,
+  "oracle_pubkey": "Orac1eKey1111111111111111111111111111111111",
+  "solana_slot": 298412894,
+  "pool_3_liquidity_tracker": "active",
+  "version": "1.0.0"
+}

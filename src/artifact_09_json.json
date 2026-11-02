@@ -1,0 +1,11 @@
+// GET /health
+{
+  "status": "healthy",
+  "service": "QuestCast Season Zero Engine",
+  "network": "devnet",
+  "program_id": "SzQ3PUMP3Soc1aLQu3stEng1n311111111111111111",
+  "oracle_pubkey": "3B8r6wP9pGf4vY9jZzK5N8xL7sM4qW2aE1rT6yU8iO9p",
+  "solana_rpc_latency_ms": 32,
+  "ffmpeg_pipeline": "operational",
+  "queue_backlog": 0
+}

@@ -1,0 +1,12 @@
+🧵 1/3: Season Zero is officially HERE on @Solana! 🔥
+We are kicking off the ultimate convergence of liquidity & content creation with "Pump the Pool 3" and Social Quests.
+Lock liquidity, create videos, and earn verified rewards on-chain.
+Here is how it works 👇
+
+🧵 2/3: No more Google Forms or bot spam. 
+Our open-source engine pairs on-chain LP accounting with Ed25519 cryptographic Oracle proofs. 
+Hold LP in #PumpThePool3 ➡️ Get an instant 1.5x multiplier on all video review quests, complete with automated @resend notifications! ⚡
+
+🧵 3/3: Watch the full 4K showcase breakdown below, review the open-source Anchor program, and start stacking points for Season Zero today! 🚀
+Repo & Video: https://github.com/solana-developers/season-zero-ptp3
+Let’s PUMP THE POOL! 🌊 @Solana #Solana #DeFi
