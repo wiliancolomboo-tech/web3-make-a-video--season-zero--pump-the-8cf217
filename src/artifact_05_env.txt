@@ -1,6 +1,6 @@
 SOLANA_RPC_URL="https://api.devnet.solana.com"
 PROGRAM_ID="SznZero111111111111111111111111111111111111"
 ORACLE_SECRET_KEY="[1,2,3...64_bytes_array]"
-RESEND_API_KEY="re_live_enterprise_secret_key"
+RESEND_API_KEY="re_test_000000000000000000000000"
 DISCORD_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
 PORT=8080

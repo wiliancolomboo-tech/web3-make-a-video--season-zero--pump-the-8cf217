@@ -1,6 +1,6 @@
 NODE_ENV=production
 PORT=8080
 SOLANA_RPC_URL=https://api.devnet.solana.com
-ORACLE_SECRET_KEY=YOUR_BASE64_ED25519_KEYPAIR_HERE
+ORACLE_SECRET_KEY="mock_development_token_00000000000000"
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
